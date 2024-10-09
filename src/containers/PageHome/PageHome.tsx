@@ -1,23 +1,42 @@
-import React from "react";
-import SectionHowItWork from "components/SectionHowItWork/SectionHowItWork";
-import BackgroundSection from "components/BackgroundSection/BackgroundSection";
-import SectionPromo1 from "components/SectionPromo1";
+import React, {useEffect, useState} from "react";
 import SectionHero2 from "components/SectionHero/SectionHero2";
 import SectionSliderLargeProduct from "components/SectionSliderLargeProduct";
 import SectionSliderProductCard from "components/SectionSliderProductCard";
-import DiscoverMoreSlider from "components/DiscoverMoreSlider";
-import SectionGridMoreExplore from "components/SectionGridMoreExplore/SectionGridMoreExplore";
-import SectionPromo2 from "components/SectionPromo2";
-import SectionSliderCategories from "components/SectionSliderCategories/SectionSliderCategories";
-import SectionGridFeatureItems from "./SectionGridFeatureItems";
-import SectionPromo3 from "components/SectionPromo3";
-import SectionClientSay from "components/SectionClientSay/SectionClientSay";
-import SectionMagazine5 from "containers/BlogPage/SectionMagazine5";
-import Heading from "components/Heading/Heading";
-import ButtonSecondary from "shared/Button/ButtonSecondary";
-import { PRODUCTS, SPORT_PRODUCTS } from "data/data";
+import {Product} from "../PageSearch";
+import {fetchProducts} from "../../data/product_auto_fetch";
 
 function PageHome() {
+    const [products, setProducts] = useState<Product[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetchProducts()
+                if (response) {
+                    const fetchedProducts = response.map((item: any) => ({
+                        id: item.product_id,
+                        name: item.product_name,
+                        description: item.description || "",
+                        keyPoints: item.keyPoints || "",
+                        price: item.product_price,
+                        image: `data:image/png;base64,${item.image_url}`,
+                        image_url_2: `data:image/png;base64,${item.image_url_2}`,
+                        image_url_3: `data:image/png;base64,${item.image_url_3}`,
+                        category: item.category || "Unknown",
+                        tags: item.tags ? item.tags.split(",") : [],
+                        link: `/product-detail/${item.product_id}`,
+                        variants: item.variants ? item.variants.split(",") : [],
+                    }));
+                    // @ts-ignore
+                    setProducts(fetchedProducts);
+                } else {
+                    console.error("No data received from the API.");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, []);
     return (
         <div className="nc-PageHome relative overflow-hidden">
             {/* SECTION HERO */}
@@ -29,16 +48,12 @@ function PageHome() {
 
             <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
                 {/* SECTION */}
-                <SectionSliderProductCard
-                    data={[
-                        PRODUCTS[4],
-                        PRODUCTS[1],
-                        PRODUCTS[3],
-                        PRODUCTS[2],
-                        PRODUCTS[5],
-                    ]}
-                />
 
+                {products.length > 0 && (
+                    <SectionSliderProductCard
+                        data={products}
+                    />
+                )}
 
                 {/*How it work*/}
                 {/* <div className="py-24 lg:py-32 border-t border-b border-slate-200 dark:border-slate-700">
@@ -61,7 +76,7 @@ function PageHome() {
                 {/* <SectionPromo2 /> */}
 
                 {/* SECTION 3 */}
-                <SectionSliderLargeProduct cardStyle="style2" />
+                <SectionSliderLargeProduct cardStyle="style2"/>
 
                 {/*More collections*/}
                 {/* <SectionSliderCategories /> */}

@@ -25,8 +25,8 @@ function PageHome2() {
 
         {/* SECTION */}
         <SectionSliderProductCard
-          data={SPORT_PRODUCTS.filter((_, i) => i < 8)}
-          subHeading="New Sports equipment"
+          // data={SPORT_PRODUCTS.filter((_, i) => i < 8)}
+          // subHeading="New Sports equipment"
         />
 
         {/* SECTION */}
