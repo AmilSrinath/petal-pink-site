@@ -1,10 +1,13 @@
 import { useCart } from "../ProductDetailPage/CartContext";
-import ContactInfo from "./ContactInfo";
 import PaymentMethod from "./PaymentMethod";
-import ShippingAddress from "./ShippingAddress";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import logo from "../../shared/Logo/Logo";
+import ButtonSecondary from "../../shared/Button/ButtonSecondary";
+import Label from "../../components/Label/Label";
+import Input from "../../shared/Input/Input";
+import Select from "../../shared/Select/Select";
+import Radio from "../../shared/Radio/Radio";
 
 // Define the types for the product and cart items
 interface Product {
@@ -71,6 +74,8 @@ const CheckoutPage = () => {
     const totalWeight = cart.reduce((acc: number, item: CartItem) => {
         return acc + item.product.weight * item.quantity;
     }, 0);
+
+    console.log(totalWeight)
 
     // Calculate shipping estimate based on total weight
     const shippingEstimate = totalWeight > 1000 ? fistKillo + (Math.floor((totalWeight - 1000) / 1000) * secondKillo) : fistKillo;
@@ -145,45 +150,352 @@ const CheckoutPage = () => {
         return (
             <div className="space-y-8">
                 <div id="ContactInfo" className="scroll-mt-24">
-                    <ContactInfo
-                        isActive={tabActive === "ContactInfo"}
-                        onOpenActive={() => {
-                            setTabActive("ContactInfo");
-                            handleScrollToEl("ContactInfo");
-                        }}
-                        onCloseActive={() => {
-                            setTabActive("ShippingAddress");
-                            handleScrollToEl("ShippingAddress");
-                        }}
-                        setValidContactInfo={setValidContactInfo}
-                    />
+                    <div className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden z-0 ml">
+                        <div className="flex flex-col sm:flex-row items-start p-6 ">
+                            <svg
+                                className="w-6 h-6 text-slate-700 dark:text-slate-400 mt-0.5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M12.12 12.78C12.05 12.77 11.96 12.77 11.88 12.78C10.12 12.72 8.71997 11.28 8.71997 9.50998C8.71997 7.69998 10.18 6.22998 12 6.22998C13.81 6.22998 15.28 7.69998 15.28 9.50998C15.27 11.28 13.88 12.72 12.12 12.78Z"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M18.74 19.3801C16.96 21.0101 14.6 22.0001 12 22.0001C9.40001 22.0001 7.04001 21.0101 5.26001 19.3801C5.36001 18.4401 5.96001 17.5201 7.03001 16.8001C9.77001 14.9801 14.25 14.9801 16.97 16.8001C18.04 17.5201 18.64 18.4401 18.74 19.3801Z"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                            <div className="sm:ml-8">
+                                <h3 className=" text-slate-700 dark:text-slate-300 flex ">
+                                    <span className="uppercase tracking-tight">CONTACT INFO</span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div className="ml-7 mb-4">
+                            <div className="max-w-lg">
+                                <Label className="text-sm">Your phone number 1</Label>
+                                <Input
+                                    className="mt-1.5"
+                                    placeholder={"07XXXXXXXX"}
+                                    type={"tel"}
+                                />
+                            </div>
+                            <div className="max-w-lg">
+                                <Label className="text-sm">Your phone number 2</Label>
+                                <Input
+                                    className="mt-1.5"
+                                    placeholder={"07XXXXXXXX"}
+                                    type={"tel"}
+                                />
+                            </div>
+                            <div className="max-w-lg">
+                                <Label className="text-sm">Email address</Label>
+                                <Input
+                                    className="mt-1.5"
+                                    placeholder={"nimalrathnayaka@gmail.com"}
+                                    type={"email"}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="ShippingAddress" className="scroll-mt-24">
-                    <ShippingAddress
-                        isActive={tabActive === "ShippingAddress"}
-                        onOpenActive={() => {
-                            setTabActive("ShippingAddress");
-                            handleScrollToEl("ShippingAddress");
-                        }}
-                        onCloseActive={() => {
-                            setTabActive("PaymentMethod");
-                            handleScrollToEl("PaymentMethod");
-                        }}
-                        setValidShippingAddress={setValidShippingAddress}
-                    />
+                <div id="ShippingAddress" className="scroll-mt-24 ml">
+                    <div className="border border-slate-200 dark:border-slate-700 rounded-xl">
+                        <div className="p-6 flex flex-col sm:flex-row items-start ml">
+                            <span className="hidden sm:block">
+                              <svg className="w-6 h-6 text-slate-700 dark:text-slate-400 mt-0.5" viewBox="0 0 24 24"
+                                   fill="none"
+                                   xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12.1401 15.0701V13.11C12.1401 10.59 14.1801 8.54004 16.7101 8.54004H18.6701"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path
+                                    d="M5.62012 8.55005H7.58014C10.1001 8.55005 12.1501 10.59 12.1501 13.12V13.7701V17.25"
+                                    stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+                                    strokeLinejoin="round"/>
+                                <path d="M7.14008 6.75L5.34009 8.55L7.14008 10.35" stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M16.8601 6.75L18.6601 8.55L16.8601 10.35" stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </span>
+                            <div className="sm:ml-8">
+                                <h3 className=" text-slate-700 dark:text-slate-300 flex ">
+                                    <span className="uppercase tracking-tight">SHIPPING ADDRESS</span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div className="ml-7 mb-4 mr-7">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+                                <div>
+                                    <Label className="text-sm">First name</Label>
+                                    <Input className="mt-1.5"/>
+                                </div>
+                                <div>
+                                    <Label className="text-sm">Last name</Label>
+                                    <Input className="mt-1.5"/>
+                                </div>
+                            </div>
+                            <div className="sm:flex space-y-4 sm:space-y-0 sm:space-x-3">
+                                <div className="flex-1">
+                                    <Label className="text-sm">Address</Label>
+                                    <Input className="mt-1.5"/>
+                                </div>
+                                <div className="sm:w-1/3">
+                                    <Label className="text-sm">Apt, Suite</Label>
+                                    <Input className="mt-1.5"/>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+                                <div>
+                                    <Label className="text-sm">City</Label>
+                                    <Input className="mt-1.5"/>
+                                </div>
+                                <div>
+                                    <Label className="text-sm">Country</Label>
+                                    <Select className="mt-1.5">
+                                        <option value="Sri Lanka">Sri Lanka</option>
+                                    </Select>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+                                <div>
+                                    <Label className="text-sm">State/Province</Label>
+                                    <Input className="mt-1.5"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="PaymentMethod" className="scroll-mt-24">
-                    <PaymentMethod
-                        isActive={tabActive === "PaymentMethod"}
-                        onOpenActive={() => {
-                            setTabActive("PaymentMethod");
-                            handleScrollToEl("PaymentMethod");
-                        }}
-                        onCloseActive={() => setTabActive("PaymentMethod")}
-                        setValidPaymentMethod={setValidPaymentMethod}
+                <div id="ShippingAddress" className="scroll-mt-24 ml">
+                    <div className="border border-slate-200 dark:border-slate-700 rounded-xl">
+                        <div className="p-6 flex flex-col sm:flex-row items-start">
+            <span className="hidden sm:block">
+                <svg
+                    className="w-6 h-6 text-slate-700 dark:text-slate-400 mt-0.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M3.92969 15.8792L15.8797 3.9292"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeMiterlimit="10"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                     />
+                    <path
+                        d="M11.1013 18.2791L12.3013 17.0791"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeMiterlimit="10"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                    <path
+                        d="M13.793 15.5887L16.183 13.1987"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeMiterlimit="10"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                    <path
+                        d="M3.60127 10.239L10.2413 3.599C12.3613 1.479 13.4213 1.469 15.5213 3.569L20.4313 8.479C22.5313 10.579 22.5213 11.639 20.4013 13.759L13.7613 20.399C11.6413 22.519 10.5813 22.529 8.48127 20.429L3.57127 15.519C1.47127 13.419 1.47127 12.369 3.60127 10.239Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                    <path
+                        d="M2 21.9985H22"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            </span>
+                            <div className="sm:ml-8">
+                                <h3 className="text-slate-700 dark:text-slate-400 flex">
+                                    <span className="uppercase tracking-tight">PAYMENT METHOD</span>
+                                </h3>
+                            </div>
+                        </div>
+
+                        {/* Payment Method Options */}
+                        <div className="p-6 space-y-4 ">
+                            <div className="flex items-start space-x-4 sm:space-x-6 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
+                                <input
+                                    type="radio"
+                                    name="payment-method"
+                                    id="Credit-Card"
+                                    className="pt-3.5"
+                                />
+                                <div className="flex-1 ">
+                                    <label
+                                        htmlFor="Credit-Card"
+                                        className="flex items-center space-x-4 sm:space-x-6"
+                                    >
+                                        <div>
+                                    <span className="hidden sm:block">
+                                        <svg
+                                            className="w-6 h-6 text-slate-700 dark:text-slate-400 mt-0.5"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M3.92969 15.8792L15.8797 3.9292"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeMiterlimit="10"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                            <path
+                                                d="M11.1013 18.2791L12.3013 17.0791"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeMiterlimit="10"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                            <path
+                                                d="M13.793 15.5887L16.183 13.1987"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeMiterlimit="10"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                            <path
+                                                d="M3.60127 10.239L10.2413 3.599C12.3613 1.479 13.4213 1.469 15.5213 3.569L20.4313 8.479C22.5313 10.579 22.5213 11.639 20.4013 13.759L13.7613 20.399C11.6413 22.519 10.5813 22.529 8.48127 20.429L3.57127 15.519C1.47127 13.419 1.47127 12.369 3.60127 10.239Z"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                            <path
+                                                d="M2 21.9985H22"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </span>
+                                        </div>
+                                        <p className="font-medium">Debit / Credit Card</p>
+                                    </label>
+
+                                    {/* Credit Card Form */}
+                                    <div className="mt-4 space-y-4">
+                                        <div className="max-w-lg">
+                                            <Label className="text-sm">Card number</Label>
+                                            <Input className="mt-1.5" type="text" placeholder="1234 5678 9123 4567"/>
+                                        </div>
+                                        <div className="max-w-lg">
+                                            <Label className="text-sm">Name on Card</Label>
+                                            <Input className="mt-1.5" placeholder="John Doe"/>
+                                        </div>
+                                        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                                            <div className="sm:w-2/3">
+                                                <Label className="text-sm">Expiration date (MM/YY)</Label>
+                                                <Input className="mt-1.5" placeholder="MM/YY"/>
+                                            </div>
+                                            <div className="flex-1">
+                                                <Label className="text-sm">CVC</Label>
+                                                <Input className="mt-1.5" placeholder="CVC"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Cash on Delivery Option */}
+                            <div className="flex items-start space-x-4 sm:space-x-6 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
+                                <input
+                                    type="radio"
+                                    name="payment-method"
+                                    id="Cash-on-Delivery"
+                                    className="pt-3.5"
+                                />
+                                <div className="flex-1">
+                                    <label
+                                        htmlFor="Cash-on-Delivery"
+                                        className="flex items-center space-x-4 sm:space-x-6"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="w-6 h-6"
+                                        >
+                                            <path
+                                                d="M3 12h4v4h2v-6h8v4h2v-4h2M7 16h2m-2-4h4v2h-4v-2zM12 8v2h2m4-2v4m-6 0h4v-2h-4"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                            <rect
+                                                x="10"
+                                                y="4"
+                                                width="10"
+                                                height="6"
+                                                rx="1"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                            />
+                                            <rect
+                                                x="3"
+                                                y="14"
+                                                width="7"
+                                                height="4"
+                                                rx="1"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                            />
+                                            <circle cx="6.5" cy="16" r="0.75" fill="currentColor"/>
+                                            <line x1="3" y1="15" x2="10" y2="15" stroke="currentColor"
+                                                  strokeWidth="1.5"/>
+                                            <line x1="3" y1="17" x2="10" y2="17" stroke="currentColor"
+                                                  strokeWidth="1.5"/>
+                                        </svg>
+                                        <p className="font-medium">Cash on Delivery</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -199,7 +511,8 @@ const CheckoutPage = () => {
                 <div className="flex flex-col lg:flex-row">
                     <div className="flex-1">{renderLeft()}</div>
 
-                    <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-14 2xl:mx-16"></div>
+                    <div
+                        className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-14 2xl:mx-16"></div>
 
                     <div className="w-full lg:w-[36%]">
                         <h3 className="text-lg font-semibold">Order summary</h3>
@@ -207,16 +520,20 @@ const CheckoutPage = () => {
                             {cart.map(renderProduct)}
                         </div>
 
-                        <div className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700">
+                        <div
+                            className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700">
                             <div className="mt-4 flex justify-between py-2.5">
                                 <span>Subtotal</span>
-                                <span className="font-semibold text-slate-900 dark:text-slate-200">{`${subtotal.toFixed(2)}`}</span>
+                                <span
+                                    className="font-semibold text-slate-900 dark:text-slate-200">{`${subtotal.toFixed(2)}`}</span>
                             </div>
                             <div className="flex justify-between py-2.5">
                                 <span>Shipping estimate</span>
-                                <span className="font-semibold text-slate-900 dark:text-slate-200">{`${shippingEstimate.toFixed(2)}`}</span>
+                                <span
+                                    className="font-semibold text-slate-900 dark:text-slate-200">{`${shippingEstimate.toFixed(2)}`}</span>
                             </div>
-                            <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
+                            <div
+                                className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                                 <span>Order total</span>
                                 <span>{`${orderTotal.toFixed(2)}`}</span>
                             </div>
