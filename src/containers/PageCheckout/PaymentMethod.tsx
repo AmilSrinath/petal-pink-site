@@ -95,92 +95,31 @@ const PaymentMethod: FC<Props> = ({ isActive, onOpenActive, onCloseActive, setVa
                   }`}
               >
                 <svg
-                    className="w-6 h-6 sm:w-7 sm:h-7"
+                    xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="w-6 h-6"
                 >
                   <path
-                      d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                      d="M3 12h4v4h2v-6h8v4h2v-4h2M7 16h2m-2-4h4v2h-4v-2zM12 8v2h2m4-2v4m-6 0h4v-2h-4"
                       stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                   />
-                  <path
-                      d="M7.99998 3H8.99998C7.04998 8.84 7.04998 15.16 8.99998 21H7.99998"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                  />
-                  <path
-                      d="M15 3C16.95 8.84 16.95 15.16 15 21"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                  />
-                  <path
-                      d="M3 16V15C8.84 16.95 15.16 16.95 21 15V16"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                  />
-                  <path
-                      d="M3 9.0001C8.84 7.0501 15.16 7.0501 21 9.0001"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                  />
+                  <rect x="10" y="4" width="10" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                  <rect x="3" y="14" width="7" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                  <circle cx="6.5" cy="16" r="0.75" fill="currentColor"/>
+                  <line x1="3" y1="15" x2="10" y2="15" stroke="currentColor" stroke-width="1.5"/>
+                  <line x1="3" y1="17" x2="10" y2="17" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
               </div>
-              <p className="font-medium">Internet banking</p>
+              <p className="font-medium">Cash on Delivery</p>
             </label>
-            <div className={`mt-6 mb-4 ${active ? "block" : "hidden"}`}>
-              <p className="text-sm dark:text-slate-300">
-                Your order will be delivered after transfer to the following account:
-              </p>
-              <ul className="mt-3.5 text-sm text-slate-500 dark:text-slate-400 space-y-2">
-                <li>
-                  <h3 className="text-base text-slate-800 dark:text-slate-200 font-semibold mb-1">
-                    Example Name
-                  </h3>
-                </li>
-                <li>
-                  Bank name:{" "}
-                  <span className="text-slate-900 dark:text-slate-200 font-medium">
-                  Example Bank Name
-                </span>
-                </li>
-                <li>
-                  Account number:{" "}
-                  <span className="text-slate-900 dark:text-slate-200 font-medium">
-                  555 888 777
-                </span>
-                </li>
-                <li>
-                  Sort code:{" "}
-                  <span className="text-slate-900 dark:text-slate-200 font-medium">
-                  999
-                </span>
-                </li>
-                <li>
-                  IBAN:{" "}
-                  <span className="text-slate-900 dark:text-slate-200 font-medium">
-                  IBAN Example
-                </span>
-                </li>
-                <li>
-                  BIC:{" "}
-                  <span className="text-slate-900 dark:text-slate-200 font-medium">
-                  BIC Example
-                </span>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
     );

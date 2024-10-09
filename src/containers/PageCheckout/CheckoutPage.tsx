@@ -2,7 +2,7 @@ import { useCart } from "../ProductDetailPage/CartContext";
 import ContactInfo from "./ContactInfo";
 import PaymentMethod from "./PaymentMethod";
 import ShippingAddress from "./ShippingAddress";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import logo from "../../shared/Logo/Logo";
 
@@ -27,14 +27,50 @@ const CheckoutPage = () => {
     const [validShippingAddress, setValidShippingAddress] = useState(false);
     const [validPaymentMethod, setValidPaymentMethod] = useState(false);
 
+    const [fistKillo, setFistKillo] = useState(350); // Initial default value
+    const [secondKillo, setSecondKillo] = useState(70); // Initial default value
+    const [loading, setLoading] = useState(true); // Loading state for fetching config
+
+    // Fetch configuration on mount
+    useEffect(() => {
+        const fetchConfig = async () => {
+            try {
+                const response = await fetch('http://localhost:4000/api/configuration/getAllConfig', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch configuration');
+                }
+
+                const data = await response.json();
+                const configs = data.configs;
+
+                // Set fistKillo and secondKillo based on the response
+                const firstKiloConfig = configs.find((config: any) => config.config_name === 'price-of-the-first-kilo');
+                const addedKiloConfig = configs.find((config: any) => config.config_name === 'price-of-the-added-kilo');
+
+                if (firstKiloConfig) setFistKillo(Number(firstKiloConfig.config_value));
+                if (addedKiloConfig) setSecondKillo(Number(addedKiloConfig.config_value));
+
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching configuration:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchConfig();
+    }, []);
+
     const subtotal = cart.reduce((acc: number, item: CartItem) => acc + item.product.price * item.quantity, 0);
 
     const totalWeight = cart.reduce((acc: number, item: CartItem) => {
         return acc + item.product.weight * item.quantity;
     }, 0);
-
-    const fistKillo = 350;
-    const secondKillo = 70;
 
     // Calculate shipping estimate based on total weight
     const shippingEstimate = totalWeight > 1000 ? fistKillo + (Math.floor((totalWeight - 1000) / 1000) * secondKillo) : fistKillo;
