@@ -12,6 +12,7 @@ interface Product {
     name: string;
     price: number;
     image: string;
+    weight: number;  // Add weight property
 }
 interface CartItem {
     product: Product;
@@ -22,12 +23,21 @@ const CheckoutPage = () => {
     const [tabActive, setTabActive] = useState<"ContactInfo" | "ShippingAddress" | "PaymentMethod">("ContactInfo");
     const { cart, updateQuantity, removeFromCart } = useCart();
 
-    const shippingEstimate = 5.00;
     const [validContactInfo, setValidContactInfo] = useState(false);
     const [validShippingAddress, setValidShippingAddress] = useState(false);
     const [validPaymentMethod, setValidPaymentMethod] = useState(false);
 
     const subtotal = cart.reduce((acc: number, item: CartItem) => acc + item.product.price * item.quantity, 0);
+
+    const totalWeight = cart.reduce((acc: number, item: CartItem) => {
+        return acc + item.product.weight * item.quantity;
+    }, 0);
+
+    const fistKillo = 350;
+    const secondKillo = 70;
+
+    // Calculate shipping estimate based on total weight
+    const shippingEstimate = totalWeight > 1000 ? fistKillo + (Math.floor((totalWeight - 1000) / 1000) * secondKillo) : fistKillo;
     const orderTotal = subtotal + shippingEstimate;
 
     const handleScrollToEl = (id: string) => {
@@ -39,7 +49,7 @@ const CheckoutPage = () => {
 
     const renderProduct = (item: CartItem, index: number) => {
         const { product, quantity } = item;
-        const { image, price, name } = product;
+        const { image, price, name, weight } = product;
         const productSubtotal = price * quantity;
 
         return (

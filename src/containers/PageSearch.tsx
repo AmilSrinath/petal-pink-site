@@ -11,6 +11,7 @@ export interface Product {
   id: number;
   name: string;
   price: number;
+  weight:number;
   image: string;
   image_url_2:string;
   image_url_3: string,
@@ -38,6 +39,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
           id: Number(item.product_id), // Convert id to number
           name: item.product_name,
           price: item.product_price,
+          weight: item.weight,
           image: `data:image/png;base64,${item.image_url}`,
           image_url_2:`data:image/png;base64,${item.image_url_2}`,
           image_url_3:`data:image/png;base64,${item.image_url_3}`,
@@ -61,6 +63,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // @ts-ignore
   return (
       <div className={`nc-PageSearch  ${className}`} data-nc-id="PageSearch">
         <Helmet>

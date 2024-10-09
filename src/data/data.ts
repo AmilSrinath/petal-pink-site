@@ -31,6 +31,7 @@ export interface Product {
   id: number;
   name: string;
   price: number;
+  weight: number;
   image: string;
   image_url_2:string;
   image_url_3:string;
@@ -118,6 +119,7 @@ export const PRODUCTS: Product[] = [
     description: "",
     keyPoints:"",
     price: 2500,
+    weight: 0,
     image: hairOil,
     image_url_2: keratin,
     image_url_3: keratin,
@@ -134,6 +136,7 @@ export const PRODUCTS: Product[] = [
     description: "",
     keyPoints:"",
     price: 2500,
+    weight: 0,
     image: serum,
     image_url_2: keratin,
     image_url_3: keratin,
@@ -152,6 +155,7 @@ export const PRODUCTS: Product[] = [
     description: "",
     keyPoints:"",
     price: 2500,
+    weight: 0,
     image: keratin,
     image_url_2: keratin,
     image_url_3: keratin,
@@ -169,6 +173,7 @@ export const PRODUCTS: Product[] = [
     description: "",
     keyPoints:"",
     price: 2500,
+    weight: 0,
     image: shampoo,
     image_url_2: keratin,
     image_url_3: keratin,
@@ -185,6 +190,7 @@ export const PRODUCTS: Product[] = [
     description: "",
     keyPoints:"",
     price: 2500,
+    weight: 0,
     image: growth_mask,
     image_url_2: keratin,
     image_url_3: keratin,
