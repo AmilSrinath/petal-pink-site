@@ -1,5 +1,4 @@
 import { useCart } from "../ProductDetailPage/CartContext";
-import PaymentMethod from "./PaymentMethod";
 import React, { useState, useEffect } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import logo from "../../shared/Logo/Logo";
@@ -25,10 +24,6 @@ interface CartItem {
 const CheckoutPage = () => {
     const [tabActive, setTabActive] = useState<"ContactInfo" | "ShippingAddress" | "PaymentMethod">("ContactInfo");
     const { cart, updateQuantity, removeFromCart } = useCart();
-
-    const [validContactInfo, setValidContactInfo] = useState(false);
-    const [validShippingAddress, setValidShippingAddress] = useState(false);
-    const [validPaymentMethod, setValidPaymentMethod] = useState(false);
 
     const [fistKillo, setFistKillo] = useState(350); // Initial default value
     const [secondKillo, setSecondKillo] = useState(70); // Initial default value
@@ -541,7 +536,6 @@ const CheckoutPage = () => {
                         <ButtonPrimary
                             href="/"
                             className="mt-8 w-full"
-                            disabled={!(validContactInfo && validShippingAddress && validPaymentMethod)}
                         >
                             Confirm order
                         </ButtonPrimary>
