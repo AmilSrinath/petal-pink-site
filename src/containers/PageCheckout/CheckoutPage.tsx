@@ -1,12 +1,9 @@
 import { useCart } from "../ProductDetailPage/CartContext";
 import React, { useState, useEffect } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
-import logo from "../../shared/Logo/Logo";
-import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import Label from "../../components/Label/Label";
 import Input from "../../shared/Input/Input";
 import Select from "../../shared/Select/Select";
-import Radio from "../../shared/Radio/Radio";
 
 // Define the types for the product and cart items
 interface Product {
@@ -28,6 +25,20 @@ const CheckoutPage = () => {
     const [fistKillo, setFistKillo] = useState(350); // Initial default value
     const [secondKillo, setSecondKillo] = useState(70); // Initial default value
     const [loading, setLoading] = useState(true); // Loading state for fetching config
+
+
+    // Customer details state
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [address, setAddress] = useState("");
+    const [city, setCity] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone1, setPhone1] = useState("");
+    const [phone2, setPhone2] = useState("");
+    const [province, setProvince] = useState("");
+    const [suite, setSuite] = useState("");
+    const [country, setCountry] = useState("Sri Lanka");
+    const [paymentMethod, setPaymentMethod] = useState<"CreditCard" | "CashOnDelivery">("CreditCard");
 
     // Fetch configuration on mount
     useEffect(() => {
@@ -82,6 +93,53 @@ const CheckoutPage = () => {
             element?.scrollIntoView({ behavior: "smooth" });
         }, 80);
     };
+
+
+    const handleSubmitOrder = async () => {
+        const orderDetails = cart.map(item => ({
+            productName: item.product.name,
+            price: item.product.price,
+            quantity: item.quantity,
+            subTotal: item.product.price * item.quantity
+        }));
+
+        const payload = {
+            firstName,
+            lastName,
+            address,
+            city,
+            email,
+            phone1,
+            phone2,
+            province,
+            suite,
+            country,
+            cartItems: orderDetails,
+            total: orderTotal,
+            paymentMethod
+        };
+
+        try {
+            const response = await fetch('http://localhost:4000/api/order/saveOrder', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                // Handle successful order submission
+                alert('Order placed successfully!');
+            } else {
+                throw new Error('Failed to place order');
+            }
+        } catch (error) {
+            console.error('Error placing order:', error);
+        }
+    };
+
+
 
     const renderProduct = (item: CartItem, index: number) => {
         const { product, quantity } = item;
@@ -188,6 +246,8 @@ const CheckoutPage = () => {
                                     className="mt-1.5"
                                     placeholder={"07XXXXXXXX"}
                                     type={"tel"}
+                                    value={phone1}
+                                    onChange={(e) => setPhone1(e.target.value)}
                                 />
                             </div>
                             <div className="max-w-lg">
@@ -196,6 +256,8 @@ const CheckoutPage = () => {
                                     className="mt-1.5"
                                     placeholder={"07XXXXXXXX"}
                                     type={"tel"}
+                                    value={phone2}
+                                    onChange={(e) => setPhone2(e.target.value)}
                                 />
                             </div>
                             <div className="max-w-lg">
@@ -204,6 +266,8 @@ const CheckoutPage = () => {
                                     className="mt-1.5"
                                     placeholder={"nimalrathnayaka@gmail.com"}
                                     type={"email"}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                         </div>
@@ -245,31 +309,55 @@ const CheckoutPage = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
                                 <div>
                                     <Label className="text-sm">First name</Label>
-                                    <Input className="mt-1.5"/>
+                                    <Input
+                                        className="mt-1.5"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                    />
                                 </div>
                                 <div>
                                     <Label className="text-sm">Last name</Label>
-                                    <Input className="mt-1.5"/>
+                                    <Input
+                                        className="mt-1.5"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                    />
                                 </div>
                             </div>
                             <div className="sm:flex space-y-4 sm:space-y-0 sm:space-x-3">
                                 <div className="flex-1">
                                     <Label className="text-sm">Address</Label>
-                                    <Input className="mt-1.5"/>
+                                    <Input
+                                        className="mt-1.5"
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                    />
                                 </div>
                                 <div className="sm:w-1/3">
                                     <Label className="text-sm">Apt, Suite</Label>
-                                    <Input className="mt-1.5"/>
+                                    <Input
+                                        className="mt-1.5"
+                                        value={suite}
+                                        onChange={(e) => setSuite(e.target.value)}
+                                    />
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
                                 <div>
                                     <Label className="text-sm">City</Label>
-                                    <Input className="mt-1.5"/>
+                                    <Input
+                                        className="mt-1.5"
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
+                                    />
                                 </div>
                                 <div>
                                     <Label className="text-sm">Country</Label>
-                                    <Select className="mt-1.5">
+                                    <Select
+                                        className="mt-1.5"
+                                        value={country}
+                                        onChange={(e) => setCountry(e.target.value)}
+                                    >
                                         <option value="Sri Lanka">Sri Lanka</option>
                                     </Select>
                                 </div>
@@ -277,7 +365,11 @@ const CheckoutPage = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
                                 <div>
                                     <Label className="text-sm">State/Province</Label>
-                                    <Input className="mt-1.5"/>
+                                    <Input
+                                        className="mt-1.5"
+                                        value={province}
+                                        onChange={(e) => setProvince(e.target.value)}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -349,6 +441,9 @@ const CheckoutPage = () => {
                                     name="payment-method"
                                     id="Credit-Card"
                                     className="pt-3.5"
+                                    value="CreditCard"
+                                    checked={paymentMethod === "CreditCard"}
+                                    onChange={() => setPaymentMethod("CreditCard")}
                                 />
                                 <div className="flex-1 ">
                                     <label
@@ -438,6 +533,9 @@ const CheckoutPage = () => {
                                     name="payment-method"
                                     id="Cash-on-Delivery"
                                     className="pt-3.5"
+                                    value="CashOnDelivery"
+                                    checked={paymentMethod === "CashOnDelivery"}
+                                    onChange={() => setPaymentMethod("CashOnDelivery")}
                                 />
                                 <div className="flex-1">
                                     <label
@@ -534,8 +632,8 @@ const CheckoutPage = () => {
                             </div>
                         </div>
                         <ButtonPrimary
-                            href="/"
                             className="mt-8 w-full"
+                            onClick={handleSubmitOrder}
                         >
                             Confirm order
                         </ButtonPrimary>
