@@ -1,12 +1,12 @@
-import React, { FC, useState } from "react";
+import React, {FC, useEffect, useState} from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import AccordionInfo from "./AccordionInfo";
 import BagIcon from "components/BagIcon";
 import { PRODUCTS } from "data/data";
 import {
-  NoSymbolIcon,
-  ClockIcon,
-  SparklesIcon,
+    NoSymbolIcon,
+    ClockIcon,
+    SparklesIcon, PlusIcon, MinusIcon,
 } from "@heroicons/react/24/outline";
 import IconDiscount from "components/IconDiscount";
 import Prices from "components/Prices";
@@ -16,6 +16,24 @@ import detail2JPG from "images/products/detail2.jpg";
 import detail3JPG from "images/products/detail3.jpg";
 import Policy from "./Policy";
 import NotifyAddTocart from "components/NotifyAddTocart";
+import {useParams} from "react-router-dom";
+import axios from "axios";
+import {Disclosure} from "@headlessui/react";
+
+// Define the Product interface
+interface Product {
+    product_id: number;
+    product_name: string;
+    product_price: number;
+    weight:number;
+    image_url: string;
+    image_url_2:string;
+    image_url_3: string,
+    description: string;
+    keyPoints:string;
+    faq: string;
+    howToUse: string;
+}
 
 export interface ProductDetailPageProps {
   className?: string;
@@ -30,6 +48,35 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
   const [qualitySelected, setQualitySelected] = React.useState(1);
   const [isOpenModalViewAllReviews, setIsOpenModalViewAllReviews] =
       useState(false);
+
+
+    const { id } = useParams<{ id: string }>(); // Get the product id from URL params
+    const [product, setProduct] = useState<Product | null>(null); // State to store the fetched product
+
+
+
+    useEffect(() => {
+        // Fetch product details by ID from the API
+        const fetchProductById = async () => {
+            try {
+                const response = await axios.get(
+                    `http://localhost:4000/api/product/getProductById/${id}`
+                );
+                setProduct(response.data); // Set the product data
+            } catch (error) {
+                console.error("Error fetching product details:", error);
+            }
+        };
+
+        fetchProductById();
+    }, [id]);
+
+    if (!product) {
+        return <div>Product not found</div>; // Handle the case where product is not found
+    }
+
+    console.log(product)
+
 
   const notifyAddTocart = () => {
     toast.custom(
@@ -182,20 +229,38 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
     return null;
   };
 
+
+    const renderKeyPoints = () => {
+        if (!product?.keyPoints) {
+            return null;
+        }
+
+        // Split the keyPoints string by the special character or line break delimiter (e.g., '#')
+        const keyPointsArray = product.keyPoints.split('#');
+
+        return (
+            <ul className="list-disc list-inside leading-7">
+                {keyPointsArray.map((point, index) => (
+                    <li key={index}>{point.trim()}</li> // Trim any extra spaces
+                ))}
+            </ul>
+        );
+    };
+
   const renderSectionContent = () => {
     return (
         <div className="space-y-7 2xl:space-y-8">
           {/* ---------- 1 HEADING ----------  */}
           <div>
             <h2 className="text-2xl sm:text-3xl font-semibold">
-              Heavy Weight Shoes
+                {product.product_name}
             </h2>
 
             <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
               {/* <div className="flex text-xl font-semibold">$112.00</div> */}
               <Prices
                   contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-                  price={112}
+                  price={product.product_price}
               />
 
               {/*<div className="h-7 border-l border-slate-300 dark:border-slate-700"></div>*/}
@@ -249,7 +314,88 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
           {/*  */}
 
           {/* ---------- 5 ----------  */}
-          <AccordionInfo />
+          {/*<AccordionInfo />*/}
+
+            <Disclosure>
+                {({ open }) => (
+                    <>
+                        <Disclosure.Button className="flex items-center justify-between w-full px-4 py-2 font-medium text-left bg-slate-100/80 hover:bg-slate-200/60 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-slate-500 focus-visible:ring-opacity-75 ">
+                            <span>Description</span>
+                            {!open ? (
+                                <PlusIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                            ) : (
+                                <MinusIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                            )}
+                        </Disclosure.Button>
+                        <Disclosure.Panel
+                            className="p-4 pt-3 last:pb-0 text-slate-600 text-sm dark:text-slate-300 leading-6"
+                            as="div"
+                            dangerouslySetInnerHTML={{ __html: product.description}}
+                        ></Disclosure.Panel>
+                    </>
+                )}
+            </Disclosure>
+
+            <Disclosure>
+                {({ open }) => (
+                    <>
+                        <Disclosure.Button className="flex items-center justify-between w-full px-4 py-2 font-medium text-left bg-slate-100/80 hover:bg-slate-200/60 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-slate-500 focus-visible:ring-opacity-75 ">
+                            <span>Features</span>
+                            {!open ? (
+                                <PlusIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                            ) : (
+                                <MinusIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                            )}
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="p-4 pt-3 last:pb-0 text-slate-600 text-sm dark:text-slate-300 leading-6">
+                            {renderKeyPoints()}
+                        </Disclosure.Panel>
+                    </>
+                )}
+            </Disclosure>
+
+
+            <Disclosure>
+                {({ open }) => (
+                    <>
+                        <Disclosure.Button className="flex items-center justify-between w-full px-4 py-2 font-medium text-left bg-slate-100/80 hover:bg-slate-200/60 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-slate-500 focus-visible:ring-opacity-75 ">
+                            <span>How to Use</span>
+                            {!open ? (
+                                <PlusIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                            ) : (
+                                <MinusIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                            )}
+                        </Disclosure.Button>
+                        <Disclosure.Panel
+                            className="p-4 pt-3 last:pb-0 text-slate-600 text-sm dark:text-slate-300 leading-6"
+                            as="div"
+                            dangerouslySetInnerHTML={{ __html: product?.howToUse}}
+                        ></Disclosure.Panel>
+                    </>
+                )}
+            </Disclosure>
+
+
+            <Disclosure>
+                {({ open }) => (
+                    <>
+                        <Disclosure.Button className="flex items-center justify-between w-full px-4 py-2 font-medium text-left bg-slate-100/80 hover:bg-slate-200/60 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-slate-500 focus-visible:ring-opacity-75 ">
+                            <span>FAQ</span>
+                            {!open ? (
+                                <PlusIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                            ) : (
+                                <MinusIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                            )}
+                        </Disclosure.Button>
+                        <Disclosure.Panel
+                            className="p-4 pt-3 last:pb-0 text-slate-600 text-sm dark:text-slate-300 leading-6"
+                            as="div"
+                            dangerouslySetInnerHTML={{ __html: product?.faq}}
+                        ></Disclosure.Panel>
+                    </>
+                )}
+            </Disclosure>
+
 
           {/* ---------- 6 ----------  */}
           <div className="hidden xl:block">
@@ -353,7 +499,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
               <div className="relative">
                 <div className="aspect-w-16 aspect-h-16">
                   <img
-                      src={LIST_IMAGES_DEMO[0]}
+                      src={`data:image/jpeg;base64,${product.image_url}`}
                       className="w-full rounded-2xl object-cover"
                       alt="product detail 1"
                   />
@@ -363,7 +509,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
                 {/*<LikeButton className="absolute right-3 top-3 " />*/}
               </div>
               <div className="grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-8 xl:mt-8">
-                {[LIST_IMAGES_DEMO[1], LIST_IMAGES_DEMO[2]].map((item, index) => {
+                {[`data:image/jpeg;base64,${product.image_url_2}`, `data:image/jpeg;base64,${product.image_url_3}`].map((item, index) => {
                   return (
                       <div
                           key={index}

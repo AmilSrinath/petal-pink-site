@@ -9,7 +9,7 @@ const DEMO_DATA = [
         "Fashion is a form of self-expression and autonomy at a particular period and place and in a specific context, of clothing, footwear, lifestyle, accessories, makeup, hairstyle, and body posture.",
   },
   {
-    name: "Fabric + Care",
+    name: "Features",
     content: `<ul class="list-disc list-inside leading-7">
     <li>Made from a sheer Belgian power micromesh.</li>
     <li>

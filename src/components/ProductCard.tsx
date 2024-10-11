@@ -27,6 +27,7 @@ const ProductCard: FC<ProductCardProps> = ({
                                                isLiked,
                                            }) => {
     const {
+        id,
         name,
         price,
         description,
@@ -50,9 +51,10 @@ const ProductCard: FC<ProductCardProps> = ({
         setShowModalQuickView(true);
     };
 
-    const handleProductClick = (product: Product) => {
-        navigate("/product-detail", { state: { product } });
+    const handleProductDetailClick = () => {
+        navigate(`/product-detail/${id}`); // Pass the product id in the route
     };
+
     const notifyAddTocart = ({ size }: { size?: string }) => {
         toast.custom(
             (t) => (
@@ -246,16 +248,17 @@ const ProductCard: FC<ProductCardProps> = ({
             >
                 <Link to={"/product-detail"} className="absolute inset-0"></Link>
 
-                <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
-                    <Link to={"/product-detail"} className="block">
+                <div
+                    className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
+                    <div onClick={handleProductDetailClick} className="cursor-pointer">
                         <NcImage
                             containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
                             src={image}
                             className="object-cover w-full h-full drop-shadow-xl"
                         />
-                    </Link>
+                    </div>
 
-                    <ProductStatus status={status} />
+                    <ProductStatus status={status}/>
 
                     {sizes ? renderSizeList() : renderGroupButtons()}
                 </div>
