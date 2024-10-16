@@ -7,10 +7,10 @@ import Select from "../../shared/Select/Select";
 
 // Define the types for the product and cart items
 interface Product {
-    id: number;
-    name: string;
-    price: number;
-    image: string;
+    product_id: number;
+    product_name: string;
+    product_price: number;
+    image_url: string;
     weight: number;  // Add weight property
 }
 interface CartItem {
@@ -30,13 +30,13 @@ const CheckoutPage = () => {
     // Customer details state
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [address, setAddress] = useState("");
+    const [address1, setAddress1] = useState("");
+    const [address2, setAddress2] = useState("");
     const [city, setCity] = useState("");
     const [email, setEmail] = useState("");
     const [phone1, setPhone1] = useState("");
     const [phone2, setPhone2] = useState("");
     const [province, setProvince] = useState("");
-    const [suite, setSuite] = useState("");
     const [country, setCountry] = useState("Sri Lanka");
     const [paymentMethod, setPaymentMethod] = useState<"CreditCard" | "CashOnDelivery">("CreditCard");
 
@@ -75,16 +75,17 @@ const CheckoutPage = () => {
         fetchConfig();
     }, []);
 
-    const subtotal = cart.reduce((acc: number, item: CartItem) => acc + item.product.price * item.quantity, 0);
+    const subtotal = cart.reduce((acc: number, item: CartItem) => acc + item.product.product_price * item.quantity, 0);
 
     const totalWeight = cart.reduce((acc: number, item: CartItem) => {
         return acc + item.product.weight * item.quantity;
     }, 0);
 
-    console.log(totalWeight)
-
     // Calculate shipping estimate based on total weight
-    const shippingEstimate = totalWeight > 1000 ? fistKillo + (Math.floor((totalWeight - 1000) / 1000) * secondKillo) : fistKillo;
+    const shippingEstimate = totalWeight >= 1000
+        ? (Math.floor(totalWeight / 1000) * secondKillo) + fistKillo
+        : fistKillo;
+
     const orderTotal = subtotal + shippingEstimate;
 
     const handleScrollToEl = (id: string) => {
@@ -97,25 +98,27 @@ const CheckoutPage = () => {
 
     const handleSubmitOrder = async () => {
         const orderDetails = cart.map(item => ({
-            productName: item.product.name,
-            price: item.product.price,
+            productName: item.product.product_name,
+            price: item.product.product_price,
             quantity: item.quantity,
-            subTotal: item.product.price * item.quantity
+            subTotal: item.product.product_price * item.quantity
         }));
 
         const payload = {
             firstName,
             lastName,
-            address,
+            address1,
+            address2,
             city,
             email,
             phone1,
             phone2,
             province,
-            suite,
             country,
             cartItems: orderDetails,
             total: orderTotal,
+            delivery: shippingEstimate,
+            sub_total: subtotal,
             paymentMethod
         };
 
@@ -143,22 +146,22 @@ const CheckoutPage = () => {
 
     const renderProduct = (item: CartItem, index: number) => {
         const { product, quantity } = item;
-        const { image, price, name, weight } = product;
-        const productSubtotal = price * quantity;
+        const { image_url, product_price, product_name, weight } = product;
+        const productSubtotal = product_price * quantity;
 
         return (
             <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
                 <div className="relative h-36 w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
-                    <img src={image} alt={name} className="h-full w-full object-contain object-center" />
+                    <img src={image_url} alt={product_name} className="h-full w-full object-contain object-center" />
                 </div>
 
                 <div className="ml-3 sm:ml-6 flex flex-1 flex-col">
                     <div>
                         <div className="flex justify-between">
                             <div className="flex-[1.5]">
-                                <h3 className="text-base font-semibold">{name}</h3>
+                                <h3 className="text-base font-semibold">{product_name}</h3>
                                 <div className="mt-1.5 sm:mt-2.5 flex text-xm text-slate-600 dark:text-slate-300">
-                                    LKR {price}
+                                    LKR {product_price}
                                 </div>
                             </div>
                             <div className="hidden flex-1 sm:flex justify-end">
@@ -166,11 +169,11 @@ const CheckoutPage = () => {
                             </div>
                         </div>
                         <div className="flex mt-auto pt-4 items-end justify-between text-sm">
-                            <div className="hidden sm:flex text-center relative items-center">
+                            <div className="sm:flex text-center relative items-center">
                                 {/* Decrease Quantity Button */}
                                 <button
                                     className="px-2 py-1 border border-slate-200 dark:border-slate-700 rounded-md"
-                                    onClick={() => updateQuantity(product.id, Math.max(1, quantity - 1))}  // Ensure it doesn't go below 1
+                                    onClick={() => updateQuantity(product.product_id, Math.max(1, quantity - 1))}  // Ensure it doesn't go below 1
                                 >
                                     -
                                 </button>
@@ -179,7 +182,7 @@ const CheckoutPage = () => {
                                 {/* Increase Quantity Button */}
                                 <button
                                     className="px-2 py-1 border border-slate-200 dark:border-slate-700 rounded-md"
-                                    onClick={() => updateQuantity(product.id, quantity + 1)}
+                                    onClick={() => updateQuantity(product.product_id, quantity + 1)}
                                 >
                                     +
                                 </button>
@@ -188,7 +191,7 @@ const CheckoutPage = () => {
                             <a
                                 href="#"
                                 className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm"
-                                onClick={() => removeFromCart(product.id)}
+                                onClick={() => removeFromCart(product.product_id)}
                             >
                                 <span>Remove</span>
                             </a>
@@ -326,19 +329,19 @@ const CheckoutPage = () => {
                             </div>
                             <div className="sm:flex space-y-4 sm:space-y-0 sm:space-x-3">
                                 <div className="flex-1">
-                                    <Label className="text-sm">Address</Label>
+                                    <Label className="text-sm">Address 1</Label>
                                     <Input
                                         className="mt-1.5"
-                                        value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
+                                        value={address1}
+                                        onChange={(e) => setAddress1(e.target.value)}
                                     />
                                 </div>
-                                <div className="sm:w-1/3">
-                                    <Label className="text-sm">Apt, Suite</Label>
+                                <div className="flex-1">
+                                    <Label className="text-sm">Address 2</Label>
                                     <Input
                                         className="mt-1.5"
-                                        value={suite}
-                                        onChange={(e) => setSuite(e.target.value)}
+                                        value={address2}
+                                        onChange={(e) => setAddress2(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -435,7 +438,8 @@ const CheckoutPage = () => {
 
                         {/* Payment Method Options */}
                         <div className="p-6 space-y-4 ">
-                            <div className="flex items-start space-x-4 sm:space-x-6 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
+                            <div
+                                className="flex items-start space-x-4 sm:space-x-6 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
                                 <input
                                     type="radio"
                                     name="payment-method"
@@ -451,83 +455,88 @@ const CheckoutPage = () => {
                                         className="flex items-center space-x-4 sm:space-x-6"
                                     >
                                         <div>
-                                    <span className="hidden sm:block">
-                                        <svg
-                                            className="w-6 h-6 text-slate-700 dark:text-slate-400 mt-0.5"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M3.92969 15.8792L15.8797 3.9292"
-                                                stroke="currentColor"
-                                                strokeWidth="1.5"
-                                                strokeMiterlimit="10"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                            <path
-                                                d="M11.1013 18.2791L12.3013 17.0791"
-                                                stroke="currentColor"
-                                                strokeWidth="1.5"
-                                                strokeMiterlimit="10"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                            <path
-                                                d="M13.793 15.5887L16.183 13.1987"
-                                                stroke="currentColor"
-                                                strokeWidth="1.5"
-                                                strokeMiterlimit="10"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                            <path
-                                                d="M3.60127 10.239L10.2413 3.599C12.3613 1.479 13.4213 1.469 15.5213 3.569L20.4313 8.479C22.5313 10.579 22.5213 11.639 20.4013 13.759L13.7613 20.399C11.6413 22.519 10.5813 22.529 8.48127 20.429L3.57127 15.519C1.47127 13.419 1.47127 12.369 3.60127 10.239Z"
-                                                stroke="currentColor"
-                                                strokeWidth="1.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                            <path
-                                                d="M2 21.9985H22"
-                                                stroke="currentColor"
-                                                strokeWidth="1.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                        </svg>
-                                    </span>
+                            <span className="hidden sm:block">
+                                <svg
+                                    className="w-6 h-6 text-slate-700 dark:text-slate-400 mt-0.5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M3.92969 15.8792L15.8797 3.9292"
+                                        stroke="currentColor"
+                                        strokeWidth="1.5"
+                                        strokeMiterlimit="10"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    <path
+                                        d="M11.1013 18.2791L12.3013 17.0791"
+                                        stroke="currentColor"
+                                        strokeWidth="1.5"
+                                        strokeMiterlimit="10"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    <path
+                                        d="M13.793 15.5887L16.183 13.1987"
+                                        stroke="currentColor"
+                                        strokeWidth="1.5"
+                                        strokeMiterlimit="10"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    <path
+                                        d="M3.60127 10.239L10.2413 3.599C12.3613 1.479 13.4213 1.469 15.5213 3.569L20.4313 8.479C22.5313 10.579 22.5213 11.639 20.4013 13.759L13.7613 20.399C11.6413 22.519 10.5813 22.529 8.48127 20.429L3.57127 15.519C1.47127 13.419 1.47127 12.369 3.60127 10.239Z"
+                                        stroke="currentColor"
+                                        strokeWidth="1.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    <path
+                                        d="M2 21.9985H22"
+                                        stroke="currentColor"
+                                        strokeWidth="1.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </span>
                                         </div>
                                         <p className="font-medium">Debit / Credit Card</p>
                                     </label>
 
-                                    {/* Credit Card Form */}
-                                    <div className="mt-4 space-y-4">
-                                        <div className="max-w-lg">
-                                            <Label className="text-sm">Card number</Label>
-                                            <Input className="mt-1.5" type="text" placeholder="1234 5678 9123 4567"/>
-                                        </div>
-                                        <div className="max-w-lg">
-                                            <Label className="text-sm">Name on Card</Label>
-                                            <Input className="mt-1.5" placeholder="John Doe"/>
-                                        </div>
-                                        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
-                                            <div className="sm:w-2/3">
-                                                <Label className="text-sm">Expiration date (MM/YY)</Label>
-                                                <Input className="mt-1.5" placeholder="MM/YY"/>
+                                    {/* Conditionally render Credit Card Form */}
+                                    {paymentMethod === "CreditCard" && (
+                                        <div className="mt-4 space-y-4">
+                                            <div className="max-w-lg">
+                                                <Label className="text-sm">Card number</Label>
+                                                <Input className="mt-1.5" type="text"
+                                                       placeholder="1234 5678 9123 4567"/>
                                             </div>
-                                            <div className="flex-1">
-                                                <Label className="text-sm">CVC</Label>
-                                                <Input className="mt-1.5" placeholder="CVC"/>
+                                            <div className="max-w-lg">
+                                                <Label className="text-sm">Name on Card</Label>
+                                                <Input className="mt-1.5" placeholder="John Doe"/>
+                                            </div>
+                                            <div
+                                                className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                                                <div className="sm:w-2/3">
+                                                    <Label className="text-sm">Expiration date (MM/YY)</Label>
+                                                    <Input className="mt-1.5" placeholder="MM/YY"/>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <Label className="text-sm">CVC</Label>
+                                                    <Input className="mt-1.5" placeholder="CVC"/>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
 
                             {/* Cash on Delivery Option */}
-                            <div className="flex items-start space-x-4 sm:space-x-6 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
+                            <div
+                                className="flex items-start space-x-4 sm:space-x-6 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
                                 <input
                                     type="radio"
                                     name="payment-method"
@@ -621,7 +630,7 @@ const CheckoutPage = () => {
                                     className="font-semibold text-slate-900 dark:text-slate-200">{`${subtotal.toFixed(2)}`}</span>
                             </div>
                             <div className="flex justify-between py-2.5">
-                                <span>Shipping estimate</span>
+                                <span>Shipping estimate({totalWeight}g)</span>
                                 <span
                                     className="font-semibold text-slate-900 dark:text-slate-200">{`${shippingEstimate.toFixed(2)}`}</span>
                             </div>

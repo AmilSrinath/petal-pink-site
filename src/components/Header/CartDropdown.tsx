@@ -12,20 +12,20 @@ export default function CartDropdown() {
 
   const renderProduct = (item: CartItem, index: number, close: () => void) => {
     const { product, quantity } = item;
-    const { name, price, image } = product;
+    const { product_name, product_price, image_url } = product;
 
     return (
         <div key={index} className="flex py-5 last:pb-0">
           <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
             <img
-                src={image}
-                alt={name}
+                src={image_url}
+                alt={product_name}
                 className="h-full w-full object-contain object-center"
             />
             <Link
                 onClick={close}
                 className="absolute inset-0"
-                to={`/product-detail/${product.id}`} // Assuming you want to link to a product detail page by product ID
+                to={`/product-detail/${product.product_id}`} // Assuming you want to link to a product detail page by product ID
             />
           </div>
 
@@ -34,17 +34,17 @@ export default function CartDropdown() {
               <div className="flex justify-between ">
                 <div>
                   <h3 className="text-base font-medium ">
-                    <Link onClick={close} to={`/product-detail/${product.id}`}>
-                      {name}
+                    <Link onClick={close} to={`/product-detail/${product.product_id}`}>
+                      {product_name}
                     </Link>
                   </h3>
-                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                    <span>{`Natural`}</span>
-                    <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
-                    <span>{"XL"}</span>
-                  </p>
+                  {/*<p className="mt-1 text-sm text-slate-500 dark:text-slate-400">*/}
+                  {/*  <span>{`Natural`}</span>*/}
+                  {/*  <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>*/}
+                  {/*  <span>{"XL"}</span>*/}
+                  {/*</p>*/}
                 </div>
-                <Prices price={price} className="mt-0.5" />
+                <Prices price={product_price} className="mt-0.5" />
               </div>
             </div>
             <div className="flex flex-1 items-end justify-between text-sm">
@@ -54,7 +54,7 @@ export default function CartDropdown() {
                 <button
                     type="button"
                     className="font-medium text-primary-6000 dark:text-primary-500 "
-                    onClick={() => removeFromCart(product.id)}
+                    onClick={() => removeFromCart(product.product_id)}
                 >
                   Remove
                 </button>

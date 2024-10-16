@@ -27,15 +27,16 @@ const ProductCard: FC<ProductCardProps> = ({
                                                isLiked,
                                            }) => {
     const {
-        id,
-        name,
-        price,
+        product_id,
+        product_name,
+        product_price,
+        discount,
         description,
         sizes,
         variants,
         variantType,
         status,
-        image,
+        image_url,
     } = data;
     const [variantActive, setVariantActive] = React.useState(0);
     const [showModalQuickView, setShowModalQuickView] = React.useState(false);
@@ -52,7 +53,8 @@ const ProductCard: FC<ProductCardProps> = ({
     };
 
     const handleProductDetailClick = () => {
-        navigate(`/product-detail/${id}`); // Pass the product id in the route
+        navigate(`/product-detail/${product_id}`); // Pass the product id in the route
+        console.log("Done : ",product_id);
     };
 
     const notifyAddTocart = ({ size }: { size?: string }) => {
@@ -76,7 +78,7 @@ const ProductCard: FC<ProductCardProps> = ({
                     {renderProductCartOnNotify({ size })}
                 </Transition>
             ),
-            { position: "top-right", id: "nc-product-notify", duration: 3000 }
+            { position: "top-right", id: "nc-product-notify", duration: 2000 }
         );
     };
 
@@ -85,8 +87,8 @@ const ProductCard: FC<ProductCardProps> = ({
             <div className="flex ">
                 <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
                     <img
-                        src={image}
-                        alt={name}
+                        src={image_url}
+                        alt={product_name}
                         className="h-full w-full object-cover object-center"
                     />
                 </div>
@@ -94,7 +96,7 @@ const ProductCard: FC<ProductCardProps> = ({
                 <div className="ml-4 flex flex-1 flex-col">
                     <div>
                         <div className="flex justify-between ">
-                            <Prices price={price} className="mt-0.5" />
+                            <Prices price={product_price} className="mt-0.5" />
                         </div>
                     </div>
                     <div className="flex flex-1 items-end justify-between text-sm">
@@ -242,18 +244,15 @@ const ProductCard: FC<ProductCardProps> = ({
 
     return (
         <>
-            <div
-                className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
-                data-nc-id="ProductCard"
-            >
-                <Link to={"/product-detail"} className="absolute inset-0"></Link>
+            <div className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`} data-nc-id="ProductCard">
+                {/*<Link to={"/product-detail"} className="absolute inset-0"></Link>*/}
 
                 <div
                     className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
                     <div onClick={handleProductDetailClick} className="cursor-pointer">
                         <NcImage
                             containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
-                            src={image}
+                            src={image_url}
                             className="object-cover w-full h-full drop-shadow-xl"
                         />
                     </div>
@@ -263,21 +262,39 @@ const ProductCard: FC<ProductCardProps> = ({
                     {sizes ? renderSizeList() : renderGroupButtons()}
                 </div>
 
-                <div className="space-y-4 px-2.5 pt-5 pb-2.5">
+                <div className="space-y-1 px-2.5 pt-2 pb-2.5">
                     {renderVariants()}
 
                     <div>
                         <h2
                             className={`nc-ProductCard__title text-base font-semibold transition-colors`}
                         >
-                            {name}
+                            {product_name}
                         </h2>
                     </div>
 
+                    <div className="flex">
+                        {discount > 0 && (
+                            <Prices
+                                price={discount}
+                                className="mr-1"
+                                style={{ color: "green", fontSize: "15px",  }}
+                            />
+                        )}
+                        <Prices
+                            price={product_price}
+                            style={{
+                                color: discount > 0 ? "red" : "green", // Line-through only if there is a discount
+                                fontSize: "12px",
+                                textDecoration: discount > 0 ? "line-through" : "none",
+                                borderColor: discount > 0 ? 'red':'green',
+                            }}
+                        />
+                    </div>
+
                     <div className="flex justify-between items-end ">
-                        <Prices price={price} />
                         <div className="flex items-center mb-0.5">
-                            <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />
+                            <StarIcon className="w-5 h-5 pb-[1px] text-amber-400"/>
                             <span className="text-sm ml-1 text-slate-500 dark:text-slate-400">
                 {(Math.random() * 1 + 4).toFixed(1)} (
                                 {Math.floor(Math.random() * 70 + 20)} reviews)

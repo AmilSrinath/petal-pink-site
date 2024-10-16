@@ -28,15 +28,20 @@ export interface ProductVariant {
   featuredImage: string;
 }
 export interface Product {
-  id: number;
-  name: string;
-  price: number;
+  product_id: number;
+  product_name: string;
+  product_price: number;
+  discount: number;
   weight: number;
-  image: string;
+  amount:number;
+  unit_type:string;
+  image_url: string;
   image_url_2:string;
   image_url_3:string;
   description: string;
   keyPoints:string;
+  faq: string;
+  howToUse: string;
   category: string;
   tags: string[];
   link: string;  // Changed from "/product-detail/" to string
@@ -114,17 +119,22 @@ const DEMO_VARIANT_COLORS: ProductVariant[] = [
 
 export const PRODUCTS: Product[] = [
   {
-    id: 1,
-    name: 'Hair Oil',
+    product_id: 1,
+    product_name: 'Hair Oil',
     description: "",
     keyPoints:"",
-    price: 2500,
+    product_price: 2500,
+    discount: 0,
     weight: 0,
-    image: hairOil,
+    amount: 0,
+    unit_type: "",
+    image_url: hairOil,
     image_url_2: keratin,
     image_url_3: keratin,
     category: "Category 1",
     tags: ["tag1", "tag2"],
+    faq: '',
+    howToUse: '',
     link: "/product-detail/",
     variants: DEMO_VARIANT_COLORS,
     // variantType: "color",

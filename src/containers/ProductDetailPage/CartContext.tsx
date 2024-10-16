@@ -33,7 +33,7 @@ export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     const addToCart = (product: Product, quantity: number = 1) => {
         setCart((prevCart) => {
-            const existingItemIndex = prevCart.findIndex(item => item.product.id === product.id);
+            const existingItemIndex = prevCart.findIndex(item => item.product.product_id === product.product_id);
 
             if (existingItemIndex >= 0) {
                 // Update the quantity if the item is already in the cart
@@ -50,13 +50,13 @@ export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const updateQuantity = (itemId: number, quantity: number) => {
         setCart((prevCart) =>
             prevCart.map(item =>
-                item.product.id === itemId ? { ...item, quantity } : item
+                item.product.product_id === itemId ? { ...item, quantity } : item
             )
         );
     };
 
     const removeFromCart = (itemId: number) => {
-        setCart((prevCart) => prevCart.filter((item) => item.product.id !== itemId));
+        setCart((prevCart) => prevCart.filter((item) => item.product.product_id !== itemId));
     };
 
     const clearCart = () => {

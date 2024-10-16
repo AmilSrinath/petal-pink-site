@@ -19,7 +19,7 @@ const NotifyAddTocart: FC<Props> = ({
   qualitySelected,
   sizeSelected,
 }) => {
-  const { name, price, variants } = PRODUCTS[0];
+  const { product_name, product_price, variants } = PRODUCTS[0];
 
   const renderProductCartOnNotify = () => {
     return (
@@ -27,7 +27,7 @@ const NotifyAddTocart: FC<Props> = ({
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
             src={productImage}
-            alt={name}
+            alt={product_name}
             className="h-full w-full object-contain object-center"
           />
         </div>
@@ -36,7 +36,7 @@ const NotifyAddTocart: FC<Props> = ({
           <div>
             <div className="flex justify-between ">
               <div>
-                <h3 className="text-base font-medium ">{name}</h3>
+                <h3 className="text-base font-medium ">{product_name}</h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span>
                     {variants ? variants[variantActive].name : `Natural`}
@@ -45,7 +45,7 @@ const NotifyAddTocart: FC<Props> = ({
                   <span>{sizeSelected || "XL"}</span>
                 </p>
               </div>
-              <Prices price={price} className="mt-0.5" />
+              <Prices price={product_price} className="mt-0.5" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">

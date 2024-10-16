@@ -28,7 +28,7 @@ export interface ProductQuickViewProps {
 }
 
 const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", productData }) => {
-    const { name, price, sizes, variants, status, description, image, image_url_2, image_url_3, keyPoints } = productData;
+    const { product_name, product_price, sizes, variants, status, description, image_url, image_url_2, image_url_3, keyPoints } = productData;
     const keyPointsArray = keyPoints.split('#').filter((point: string) => point.trim().length > 0);
     const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
     const { addToCart } = useCart(); // Get addToCart from cart context
@@ -70,19 +70,19 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", productDa
             <div className="flex ">
                 <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
                     <img
-                        src={image}
-                        alt={name}
+                        src={image_url}
+                        alt={product_name}
                         className="h-full w-full object-cover object-center"
                     />
                 </div>
                 <div className="ml-4 flex flex-1 flex-col">
                     <div>
                         <div className="flex justify-between ">
-                            <Prices price={price} className="mt-0.5" />
+                            <Prices price={product_price} className="mt-0.5" />
                         </div>
                     </div>
                     <div className="flex flex-1 items-end justify-between text-sm">
-                        <p className="text-gray-500 dark:text-slate-400">Qty 1</p>
+                        <p className="text-gray-500 dark:text-slate-400">Qty {qualitySelected}</p>
                         <div className="flex">
                             <Link to={"/cart"} className="font-medium text-primary-6000 dark:text-primary-500">
                                 View cart
@@ -235,14 +235,14 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", productDa
                 {/* ---------- 1 HEADING ----------  */}
                 <div>
                     <h2 className="text-2xl font-semibold hover:text-primary-6000 transition-colors">
-                        <Link to="/product-detail">{name}</Link>
+                        <Link to="/product-detail">{product_name}</Link>
                     </h2>
 
                     <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
                         {/* <div className="flex text-xl font-semibold">$112.00</div> */}
                         <Prices
                             contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-                            price={price}
+                            price={product_price}
                         />
 
                         <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div>
@@ -326,7 +326,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", productDa
                     <div className="relative">
                         <div className="aspect-w-16 aspect-h-16">
                             <img
-                                src={image}
+                                src={image_url}
                                 className="w-full rounded-xl object-cover"
                                 alt="product detail 1"
                             />

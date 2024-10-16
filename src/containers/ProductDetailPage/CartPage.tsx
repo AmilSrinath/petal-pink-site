@@ -14,14 +14,14 @@ const CartPage = () => {
   };
 
   const renderProduct = (item: { product: Product; quantity: number }, index: number) => {
-    const { image, price, name, id } = item.product;
+    const { image_url, product_price, product_name, product_id } = item.product;
     const { quantity } = item;
 
     return (
         <div key={index} className="relative flex py-8 sm:py-10 xl:py-12 first:pt-0 last:pb-0">
           <div className="relative h-36 w-24 sm:w-32 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
-            <img src={image} alt={name} className="h-full w-full object-contain object-center" />
-            <Link to="/product-detail" className="absolute inset-0"></Link>
+            <img src={image_url} alt={product_name} className="h-full w-full object-contain object-center" />
+            {/*<Link to="/product-detail" className="absolute inset-0"></Link>*/}
           </div>
 
           <div className="ml-3 sm:ml-6 flex flex-1 flex-col">
@@ -29,35 +29,35 @@ const CartPage = () => {
               <div className="flex justify-between ">
                 <div className="flex-[1.5]">
                   <h3 className="text-base font-semibold">
-                    <Link to="/product-detail">{name}</Link>
+                    {product_name}
                   </h3>
                   <div className="mt-1.5 sm:mt-2.5 flex text-xl text-slate-600 dark:text-slate-300">
                     <div className="flex items-center space-x-1.5">
-                      <h2>LKR {price}</h2>
+                      <h2>LKR {product_price}</h2>
                     </div>
                   </div>
 
                   <div className="mt-3 flex justify-between w-full sm:hidden relative">
-                    <Prices price={price * quantity} />
+                    <Prices price={product_price * quantity} />
                   </div>
                 </div>
 
-                <div className="hidden sm:block text-center relative">
+                <div className="sm:block text-center relative">
                   <NcInputNumber
                       defaultValue={quantity} // The current quantity of the product
-                      onChange={(newQuantity) => handleQuantityChange(id, newQuantity)}
+                      onChange={(newQuantity) => handleQuantityChange(product_id, newQuantity)}
                   />
                 </div>
 
                 <div className="hidden flex-1 sm:flex justify-end">
-                  <Prices price={price * quantity} className="mt-0.5" /> {/* Update price based on quantity */}
+                  <Prices price={product_price * quantity} className="mt-0.5" /> {/* Update price based on quantity */}
                 </div>
               </div>
             </div>
 
             <div className="flex mt-auto pt-4 items-end justify-between text-sm">
               <button
-                  onClick={() => removeFromCart(item.product.id)}
+                  onClick={() => removeFromCart(item.product.product_id)}
                   className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm"
               >
                 <span>Remove</span>
@@ -69,7 +69,7 @@ const CartPage = () => {
   };
 
   const calculateSubtotal = () => {
-    return cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
+    return cart.reduce((total, item) => total + item.product.product_price * item.quantity, 0);
   };
 
   return (

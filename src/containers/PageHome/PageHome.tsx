@@ -13,15 +13,17 @@ function PageHome() {
                 const response = await fetchProducts()
                 if (response) {
                     const fetchedProducts = response.map((item: any) => ({
-                        id: item.product_id,
-                        name: item.product_name,
+                        product_id: item.product_id,
+                        product_name: item.product_name,
                         description: item.description || "",
                         keyPoints: item.keyPoints || "",
-                        price: item.product_price,
-                        image: `data:image/png;base64,${item.image_url}`,
+                        product_price: item.product_price,
+                        image_url: `data:image/png;base64,${item.image_url}`,
                         image_url_2: `data:image/png;base64,${item.image_url_2}`,
                         image_url_3: `data:image/png;base64,${item.image_url_3}`,
                         category: item.category || "Unknown",
+                        faq: item.faq || "",
+                        howToUse: item.howToUse || "",
                         tags: item.tags ? item.tags.split(",") : [],
                         link: `/product-detail/${item.product_id}`,
                         variants: item.variants ? item.variants.split(",") : [],
@@ -37,6 +39,7 @@ function PageHome() {
         };
         fetchData();
     }, []);
+    // @ts-ignore
     return (
         <div className="nc-PageHome relative overflow-hidden">
             {/* SECTION HERO */}
@@ -50,9 +53,7 @@ function PageHome() {
                 {/* SECTION */}
 
                 {products.length > 0 && (
-                    <SectionSliderProductCard
-                        data={products}
-                    />
+                    <SectionSliderProductCard data={products}/>
                 )}
 
                 {/*How it work*/}

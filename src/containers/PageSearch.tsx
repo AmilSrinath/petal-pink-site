@@ -1,4 +1,3 @@
-
 import React, { FC, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import HeaderFilterSearchPage from "components/HeaderFilterSearchPage";
@@ -6,18 +5,25 @@ import Input from "shared/Input/Input";
 import ButtonCircle from "shared/Button/ButtonCircle";
 import ProductCard from "components/ProductCard";
 import axios from "axios";
+import { FaThLarge, FaTh, FaThList } from "react-icons/fa";
+import ButtonPrimary from "../shared/Button/ButtonPrimary"; // Import icons
 
 export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  weight:number;
-  image: string;
-  image_url_2:string;
-  image_url_3: string,
+  product_id: number;
+  product_name: string;
+  product_price: number;
+  discount: number;
+  weight: number;
+  amount:number;
+  unit_type:string;
+  image_url: string;
+  image_url_2: string;
+  image_url_3: string;
   description: string;
-  keyPoints:string;
+  keyPoints: string;
   category: string;
+  faq: string;
+  howToUse: string;
   tags: string[];
   link: string;
 }
@@ -29,29 +35,32 @@ export interface PageSearchProps {
 const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
   const [products, setProducts] = useState<Product[]>([]); // Updated state type
   const [searchTerm, setSearchTerm] = useState(""); // State to store the search term
+  const [columns, setColumns] = useState(4); // State to control number of columns
 
   // Fetch data from API when the component mounts
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/product/getAllData');
+        const response = await axios.get("http://localhost:4000/api/product/getAllData");
         const productData = response.data.map((item: any) => ({
-          id: Number(item.product_id), // Convert id to number
-          name: item.product_name,
-          price: item.product_price,
+          product_id: Number(item.product_id), // Convert id to number
+          product_name: item.product_name,
+          product_price: item.product_price,
+          discount: item.discount,
           weight: item.weight,
-          image: `data:image/png;base64,${item.image_url}`,
-          image_url_2:`data:image/png;base64,${item.image_url_2}`,
-          image_url_3:`data:image/png;base64,${item.image_url_3}`,
+          amount:item.amount,
+          image_url: `data:image/png;base64,${item.image_url}`,
+          image_url_2: `data:image/png;base64,${item.image_url_2}`,
+          image_url_3: `data:image/png;base64,${item.image_url_3}`,
           description: item.description,
-          keyPoints:item.keyPoints,
+          keyPoints: item.keyPoints,
           category: "Category 1",
           tags: [],
           link: "/product-detail/",
         }));
         setProducts(productData);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       }
     };
 
@@ -60,10 +69,9 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
 
   // Filter the products based on the search term
   const filteredProducts = products.filter((product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // @ts-ignore
   return (
       <div className={`nc-PageSearch  ${className}`} data-nc-id="PageSearch">
         <Helmet>
@@ -71,21 +79,15 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
         </Helmet>
 
         <div
-            className={`nc-HeadBackgroundCommon h-24 2xl:h-28 top-0 left-0 right-0 w-full bg-primary-50 dark:bg-neutral-800/20 `}
+            className={`nc-HeadBackgroundCommon h-24 2xl:h-28 top-0 left-0 right-0 w-full bg-primary-50 dark:bg-neutral-800/20`}
             data-nc-id="HeadBackgroundCommon"
         />
 
         {/* Search Container */}
         <div className="container">
           <header className="max-w-2xl mx-auto -mt-10 flex flex-col lg:-mt-7">
-            <form
-                className="relative w-full"
-                onSubmit={(e) => e.preventDefault()}
-            >
-              <label
-                  htmlFor="search-input"
-                  className="text-neutral-500 dark:text-neutral-300"
-              >
+            <form className="relative w-full" onSubmit={(e) => e.preventDefault()}>
+              <label htmlFor="search-input" className="text-neutral-500 dark:text-neutral-300">
                 <span className="sr-only">Search all icons</span>
                 <Input
                     className="shadow-lg border-0 dark:border"
@@ -118,13 +120,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                   />
-                  <path
-                      d="M22 22L20 20"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                  />
+                  <path d="M22 22L20 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
               </label>
@@ -137,8 +133,29 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
             {/* FILTER */}
             <HeaderFilterSearchPage />
 
+            {/* Grid Layout Toggle Buttons - hidden on mobile */}
+            <div className="flex justify-center mb-8 space-x-4 hidden sm:block">
+              <ButtonPrimary onClick={() => setColumns(3)} className="px-4 py-2 bg-blue-500 text-white rounded-3xl">
+                <FaThLarge size={15} /> {/* Icon for 3 columns */}
+              </ButtonPrimary>
+              <ButtonPrimary onClick={() => setColumns(4)} className="px-4 py-2 bg-blue-500 text-white rounded-3xl">
+                <FaTh size={15} /> {/* Icon for 4 columns */}
+              </ButtonPrimary>
+              <ButtonPrimary onClick={() => setColumns(5)} className="px-4 py-2 bg-blue-500 text-white rounded-3xl">
+                <FaThList size={15} /> {/* Icon for 5 columns */}
+              </ButtonPrimary>
+            </div>
+
             {/* LOOP ITEMS */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
+            <div
+                className={`grid ${
+                    columns === 3
+                        ? "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+                        : columns === 4
+                            ? "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                            : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+                } gap-x-4 gap-y-6 mt-8 lg:mt-10`}
+            >
               {filteredProducts.map((item, index) => (
                   <ProductCard data={item} key={index} />
               ))}
@@ -150,14 +167,6 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
               {/*<ButtonPrimary loading>Show me more</ButtonPrimary>*/}
             </div>
           </main>
-
-          {/* === SECTION 5 Choosen By our experts === */}
-          {/* <hr className="border-slate-200 dark:border-slate-700" />
-        <SectionSliderCollections />
-        <hr className="border-slate-200 dark:border-slate-700" /> */}
-
-          {/* SUBCRIBES EARN FREE MONEY WITH ciseco*/}
-          {/* <SectionPromo1 /> */}
         </div>
       </div>
   );
