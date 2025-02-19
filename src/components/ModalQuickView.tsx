@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import ButtonClose from "shared/ButtonClose/ButtonClose";
 import ProductQuickView from "./ProductQuickView";
 import ProductQuickView2 from "./ProductQuickView2";
-import {Product, PRODUCTS} from "../data/data";
+import {Product} from "../data/data";
 
 export interface ModalQuickViewProps {
   show: boolean;

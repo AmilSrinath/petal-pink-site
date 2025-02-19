@@ -55,13 +55,12 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
     const {product_id} = useParams<{ product_id: string }>(); // Get the product id from URL params
     const [product, setProduct] = useState<Product | null>(null); // State to store the fetched product
 
-
     useEffect(() => {
         // Fetch product details by ID from the API
         const fetchProductById = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:4000/api/product/getProductById/${product_id}`
+                    `http://65.2.181.144:4000/api/customerOrderSave/getProductById/${product_id}`
                 );
                 setProduct(response.data); // Set the product data
             } catch (error) {
@@ -73,11 +72,8 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
     }, [product_id]);
 
     if (!product) {
-        return <div>Product not found</div>; // Handle the case where product is not found
+        return <div></div>; // Handle the case where product is not found
     }
-
-    console.log(product)
-
 
     const notifyAddTocart = ({ size }: { size?: string }) => {
         toast.custom(
@@ -109,7 +105,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
             <div className="flex ">
                 <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
                     <img
-                        src={`data:image/jpeg;base64,${product.image_url}`}
+                        src={product.image_url}
                         alt={product.product_name}
                         className="h-full w-full object-cover object-center"
                     />
@@ -143,14 +139,8 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
             // Check if the image_url already contains the base64 prefix
             const formattedProduct = {
                 ...product,
-                image_url: product.image_url.startsWith("data:image/jpeg;base64,")
-                    ? product.image_url
-                    : `data:image/jpeg;base64,${product.image_url}`,
+                image_url: product.image_url.startsWith("data:image/jpeg;base64,") ? product.image_url : product.image_url,
             };
-
-            // Add the product to the cart and show a notification
-
-            console.log("AAAAA : ",product.product_id);
 
             addToCart(formattedProduct, 1); // Add product to cart
             notifyAddTocart({ size: "XL" });
@@ -582,7 +572,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
                         <div className="relative">
                             <div className="aspect-w-16 aspect-h-16">
                                 <img
-                                    src={`data:image/jpeg;base64,${product.image_url}`}
+                                    src={product.image_url}
                                     className="w-full rounded-2xl object-cover"
                                     alt="product detail 1"
                                 />
@@ -592,7 +582,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
                             {/*<LikeButton className="absolute right-3 top-3 " />*/}
                         </div>
                         <div className="grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-8 xl:mt-8">
-                            {[`data:image/jpeg;base64,${product.image_url_2}`, `data:image/jpeg;base64,${product.image_url_3}`].map((item, index) => {
+                            {[product.image_url_2, product.image_url_3].map((item, index) => {
                                 return (
                                     <div
                                         key={index}

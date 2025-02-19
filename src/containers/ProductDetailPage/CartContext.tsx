@@ -65,7 +65,6 @@ export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     // Log cart whenever it changes
     useEffect(() => {
-        console.log("Cart updated:", cart);
     }, [cart]);
 
     return (

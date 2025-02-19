@@ -22,7 +22,7 @@ export const fetchProducts = async (): Promise<Product[]> => {
     }
     
     try {
-        const response = await fetch('http://localhost:4000/api/product/getAllData');
+        const response = await fetch(`http://65.2.181.144:4000/api/customerOrderSave/getAllData`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

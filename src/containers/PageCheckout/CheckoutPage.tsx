@@ -1,3 +1,4 @@
+
 import { useCart } from "../ProductDetailPage/CartContext";
 import React, { useState, useEffect } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
@@ -26,7 +27,6 @@ const CheckoutPage = () => {
     const [secondKillo, setSecondKillo] = useState(70); // Initial default value
     const [loading, setLoading] = useState(true); // Loading state for fetching config
 
-
     // Customer details state
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -40,11 +40,22 @@ const CheckoutPage = () => {
     const [country, setCountry] = useState("Sri Lanka");
     const [paymentMethod, setPaymentMethod] = useState<"CreditCard" | "CashOnDelivery">("CreditCard");
 
+    // Validation state
+    const [errors, setErrors] = useState({
+        firstName: "",
+        lastName: "",
+        address1: "",
+        city: "",
+        email: "",
+        phone1: "",
+        province: "",
+    });
+
     // Fetch configuration on mount
     useEffect(() => {
         const fetchConfig = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/configuration/getAllConfig', {
+                const response = await fetch(`http://65.2.181.144:4000/api/configuration/getAllConfig`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -96,7 +107,30 @@ const CheckoutPage = () => {
     };
 
 
+    // Validation function
+    const validateFields = () => {
+        const newErrors: any = {};
+        if (!firstName) newErrors.firstName = "First name is required.";
+        if (!lastName) newErrors.lastName = "Last name is required.";
+        if (!address1) newErrors.address1 = "Address is required.";
+        if (!city) newErrors.city = "City is required.";
+        if (!phone1) {
+            newErrors.phone1 = "Phone number 1 is required.";
+        } else if (!/^\d{10}$/.test(phone1)) {
+            newErrors.phone1 = "Phone number 1 must be 10 digits.";
+        }
+        if (!province) newErrors.province = "Province is required.";
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+
     const handleSubmitOrder = async () => {
+        if (!validateFields()) {
+            return; // Stop form submission if validation fails
+        }
+
         const orderDetails = cart.map(item => ({
             productName: item.product.product_name,
             price: item.product.product_price,
@@ -123,7 +157,7 @@ const CheckoutPage = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/api/order/saveOrder', {
+            const response = await fetch('http://65.2.181.144:4000/api/customerOrderSave/saveOrder', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -141,8 +175,6 @@ const CheckoutPage = () => {
             console.error('Error placing order:', error);
         }
     };
-
-
 
     const renderProduct = (item: CartItem, index: number) => {
         const { product, quantity } = item;
@@ -252,6 +284,7 @@ const CheckoutPage = () => {
                                     value={phone1}
                                     onChange={(e) => setPhone1(e.target.value)}
                                 />
+                                {errors.phone1 && <p className="text-red-500 text-sm">{errors.phone1}</p>}
                             </div>
                             <div className="max-w-lg">
                                 <Label className="text-sm">Your phone number 2</Label>
@@ -272,6 +305,7 @@ const CheckoutPage = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
+                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                             </div>
                         </div>
                     </div>
@@ -317,6 +351,7 @@ const CheckoutPage = () => {
                                         value={firstName}
                                         onChange={(e) => setFirstName(e.target.value)}
                                     />
+                                    {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
                                 </div>
                                 <div>
                                     <Label className="text-sm">Last name</Label>
@@ -325,6 +360,7 @@ const CheckoutPage = () => {
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}
                                     />
+                                    {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
                                 </div>
                             </div>
                             <div className="sm:flex space-y-4 sm:space-y-0 sm:space-x-3">
@@ -335,6 +371,7 @@ const CheckoutPage = () => {
                                         value={address1}
                                         onChange={(e) => setAddress1(e.target.value)}
                                     />
+                                    {errors.address1 && <p className="text-red-500 text-sm">{errors.address1}</p>}
                                 </div>
                                 <div className="flex-1">
                                     <Label className="text-sm">Address 2</Label>
@@ -353,6 +390,7 @@ const CheckoutPage = () => {
                                         value={city}
                                         onChange={(e) => setCity(e.target.value)}
                                     />
+                                    {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
                                 </div>
                                 <div>
                                     <Label className="text-sm">Country</Label>
@@ -373,6 +411,7 @@ const CheckoutPage = () => {
                                         value={province}
                                         onChange={(e) => setProvince(e.target.value)}
                                     />
+                                    {errors.province && <p className="text-red-500 text-sm">{errors.province}</p>}
                                 </div>
                             </div>
                         </div>

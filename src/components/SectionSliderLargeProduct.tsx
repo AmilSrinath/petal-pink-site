@@ -63,7 +63,6 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
       try {
         const response = await fetchProducts();
         if (Array.isArray(response)) {
-          console.log('Fetched Products:', response);
           setProducts(response);
         } else {
           console.error('Unexpected response format:', response);
@@ -88,9 +87,9 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
                         name={product.product_name}
                         price={product.product_price}
                         imgs={[
-                          `data:image/png;base64,${product.image_url}`, // Base64 encoded image
-                          `data:image/png;base64,${product.image_url_2}`, // Base64 encoded image
-                          `data:image/png;base64,${product.image_url_3}`, // Base64 encoded image
+                          product.image_url, // Base64 encoded image
+                          product.image_url_2, // Base64 encoded image
+                          product.image_url_3, // Base64 encoded image
                         ]}
                         description={product.description}
                     />

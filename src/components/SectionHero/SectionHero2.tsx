@@ -1,54 +1,50 @@
-import React, { FC, useState } from "react";
-import imageRightPng from "images/hero-right.png";
-import imageRightPng2 from "images/hero-right-2.png";
-import imageRightPng3 from "images/hero-right-3.png";
+import React, {FC, useEffect, useState} from "react";
 
-import backgroundLineSvg from "images/Moon.svg";
+import img1 from "../../img/homeScreenImg/01.15.01.png";
+import img2 from "../../img/homeScreenImg/01.15.02.png";
+import img3 from "../../img/homeScreenImg/01.15.03.png";
+import bg from "../../img/homeScreenImg/SVG file 01.15.02.svg";
+
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import Next from "shared/NextPrev/Next";
 import Prev from "shared/NextPrev/Prev";
 import useInterval from "react-use/lib/useInterval";
 import useBoolean from "react-use/lib/useBoolean";
+import axios from "axios";
 
 interface Hero2DataType {
-  image: string;
-  heading: string;
-  subHeading: string;
-  btnText: string;
-  btnLink: string;
+  id: number;
+  image_url: string;
+  title: string;
+  subtitle: string;
+  btn_link: string;
 }
+
 export interface SectionHero2Props {
   className?: string;
 }
 
-const DATA: Hero2DataType[] = [
-  {
-    image: imageRightPng2,
-    heading: "Exclusive collection for everyone",
-    subHeading: "In this season, find the best 🔥",
-    btnText: "Explore now",
-    btnLink: "/",
-  },
-  {
-    image: imageRightPng3,
-    heading: "Exclusive collection for everyone",
-    subHeading: "In this season, find the best 🔥",
-    btnText: "Explore now",
-    btnLink: "/",
-  },
-  {
-    image: imageRightPng,
-    heading: "Exclusive collection for everyone",
-    subHeading: "In this season, find the best 🔥",
-    btnText: "Explore now",
-    btnLink: "/",
-  },
-];
 let TIME_OUT: NodeJS.Timeout | null = null;
 
 const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
+  const [banners, setBanners] = useState<Hero2DataType[]>([]);
   const [indexActive, setIndexActive] = useState(0);
   const [isRunning, toggleIsRunning] = useBoolean(true);
+
+  const serverUrl = process.env.NEXT_PUBLIC_REACT_APP_API_SERVER_URL;
+  console.log(">>>>>>>>>> : ",serverUrl)
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const response = await axios.get(`http://65.2.181.144:4000/api/configuration/getAllBanners`);
+        setBanners(response.data.banners);
+      } catch (error) {
+        console.error("Error fetching banners:", error);
+      }
+    };
+    fetchBanners();
+  }, []);
 
   useInterval(
     () => {
@@ -60,7 +56,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
 
   const handleAutoNext = () => {
     setIndexActive((state) => {
-      if (state >= DATA.length - 1) {
+      if (state >= banners.length - 1) {
         return 0;
       }
       return state + 1;
@@ -69,7 +65,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
 
   const handleClickNext = () => {
     setIndexActive((state) => {
-      if (state >= DATA.length - 1) {
+      if (state >= banners.length - 1) {
         return 0;
       }
       return state + 1;
@@ -80,7 +76,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
   const handleClickPrev = () => {
     setIndexActive((state) => {
       if (state === 0) {
-        return DATA.length - 1;
+        return banners.length - 1;
       }
       return state - 1;
     });
@@ -99,7 +95,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
 
   const renderItem = (index: number) => {
     const isActive = indexActive === index;
-    const item = DATA[index];
+    const item = banners[index];
     if (!isActive) {
       return null;
     }
@@ -109,7 +105,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
         key={index}
       >
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex justify-center">
-          {DATA.map((_, index) => {
+          {banners.map((_, index) => {
             const isActive = indexActive === index;
             return (
               <div
@@ -154,7 +150,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
           {/* <div className="absolute inset-0 bg-[#F7F0EA]"> */}
           <img
             className="absolute w-full h-full object-contain"
-            src={backgroundLineSvg}
+            src={bg}
             alt="hero"
           />
         </div>
@@ -164,20 +160,20 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
             className={`relative z-[1] w-full max-w-3xl space-y-8 sm:space-y-14 nc-SectionHero2Item__left`}
           >
             <div className="space-y-5 sm:space-y-6">
-              <span className="nc-SectionHero2Item__subheading block text-base md:text-xl text-slate-700 font-medium">
-                {item.subHeading}
-              </span>
-              <h2 className="nc-SectionHero2Item__heading font-semibold text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl !leading-[114%] text-slate-900">
-                {item.heading}
+              <h2 className="nc-SectionHero2Item__heading font-semibold text-3xl sm:text-4xl md:text-4xl xl:text-4xl 2xl:text-5xl !leading-[114%] text-slate-900">
+                {item.title}
               </h2>
+              <span className="nc-SectionHero2Item__subheading block text-base md:text-xl text-slate-700 font-medium">
+                {item.subtitle}
+              </span>
             </div>
 
             <ButtonPrimary
-              className="nc-SectionHero2Item__button dark:bg-slate-900"
-              sizeClass="py-3 px-6 sm:py-5 sm:px-9"
-              href={item.btnLink as any}
+                className="nc-SectionHero2Item__button dark:bg-slate-900"
+                sizeClass="py-3 px-6 sm:py-5 sm:px-9"
+                href={item.btn_link as any}
             >
-              <span>{item.btnText}</span>
+              <span>Explore now</span>
               <span>
                 <svg className="w-5 h-5 ml-2.5" viewBox="0 0 24 24" fill="none">
                   <path
@@ -201,8 +197,8 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
           <div className="mt-10 lg:mt-0 lg:absolute right-0 bottom-0 top-0 w-full max-w-2xl xl:max-w-3xl 2xl:max-w-4xl">
             <img
               className="w-full h-full object-contain object-right-bottom nc-SectionHero2Item__image"
-              src={item.image}
-              alt={item.heading}
+              src={item.image_url}
+              alt={item.title}
             />
           </div>
         </div>
@@ -210,7 +206,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
     );
   };
 
-  return <>{DATA.map((_, index) => renderItem(index))}</>;
+  return <>{banners.map((_, index) => renderItem(index))}</>;
 };
 
 export default SectionHero2;

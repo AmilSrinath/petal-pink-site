@@ -41,7 +41,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/product/getAllData");
+        const response = await axios.get("http://65.2.181.144:4000/api/customerOrderSave/getAllData");
         const productData = response.data.map((item: any) => ({
           product_id: Number(item.product_id), // Convert id to number
           product_name: item.product_name,
@@ -49,9 +49,9 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
           discount: item.discount,
           weight: item.weight,
           amount:item.amount,
-          image_url: `data:image/png;base64,${item.image_url}`,
-          image_url_2: `data:image/png;base64,${item.image_url_2}`,
-          image_url_3: `data:image/png;base64,${item.image_url_3}`,
+          image_url: item.image_url,
+          image_url_2: item.image_url_2,
+          image_url_3: item.image_url_3,
           description: item.description,
           keyPoints: item.keyPoints,
           category: "Category 1",

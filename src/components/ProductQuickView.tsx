@@ -234,8 +234,8 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", productDa
             <div className="space-y-8">
                 {/* ---------- 1 HEADING ----------  */}
                 <div>
-                    <h2 className="text-2xl font-semibold hover:text-primary-6000 transition-colors">
-                        <Link to="/product-detail">{product_name}</Link>
+                    <h2 className="text-2xl font-semibold transition-colors">
+                        <p>{product_name}</p>
                     </h2>
 
                     <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
@@ -248,22 +248,15 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", productDa
                         <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div>
 
                         <div className="flex items-center">
-                            <Link
-                                to="/product-detail"
-                                className="flex items-center text-sm font-medium"
-                            >
-                                <StarIcon className="w-5 h-5 pb-[1px] text-yellow-400" />
-                                <div className="ml-1.5 flex">
-                                    <span>4.9</span>
-                                    <span className="block mx-2">·</span>
-                                    <span className="text-slate-600 dark:text-slate-400 underline">
-                    142 reviews
-                  </span>
-                                </div>
-                            </Link>
-                            <span className="hidden sm:block mx-2.5">·</span>
+                            <StarIcon className="w-5 h-5 pb-[1px] text-yellow-400" />
+                            <div className="ml-1.5 flex">
+                                <span>4.9</span>
+                                <span className="block mx-2">·</span>
+                                <span className="text-slate-600 dark:text-slate-400">
+                                    142 reviews
+                                </span>
+                            </div>
                             <div className="hidden sm:flex items-center text-sm">
-                                <SparklesIcon className="w-3.5 h-3.5" />
                                 <span className="ml-1 leading-none">{status}</span>
                             </div>
                         </div>

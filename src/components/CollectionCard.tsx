@@ -1,5 +1,4 @@
 import { StarIcon } from "@heroicons/react/24/solid";
-import { productImgs } from "contains/fakeData";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import NcImage from "shared/NcImage/NcImage";
