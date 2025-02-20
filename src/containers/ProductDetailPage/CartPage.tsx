@@ -3,7 +3,6 @@ import { useCart } from "./CartContext";
 import { Product } from "../../data/data";
 import NcInputNumber from "components/NcInputNumber";
 import Prices from "components/Prices";
-import { Link } from "react-router-dom";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 
 const CartPage = () => {

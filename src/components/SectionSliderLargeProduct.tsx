@@ -4,8 +4,6 @@ import Glide from "@glidejs/glide";
 import CollectionCard from "./CollectionCard";
 import CollectionCard2 from "./CollectionCard2";
 import { Link } from "react-router-dom";
-import { DEMO_LARGE_PRODUCTS } from "./SectionSliderLargeProduct2";
-import {Product} from "../containers/PageSearch";
 import {fetchProducts} from "../data/product_auto_fetch";
 
 export interface SectionSliderLargeProductProps {

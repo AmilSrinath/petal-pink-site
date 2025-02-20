@@ -20,7 +20,6 @@ interface CartItem {
 }
 
 const CheckoutPage = () => {
-    const [tabActive, setTabActive] = useState<"ContactInfo" | "ShippingAddress" | "PaymentMethod">("ContactInfo");
     const { cart, updateQuantity, removeFromCart } = useCart();
 
     const [fistKillo, setFistKillo] = useState(350); // Initial default value
@@ -55,7 +54,7 @@ const CheckoutPage = () => {
     useEffect(() => {
         const fetchConfig = async () => {
             try {
-                const response = await fetch(`http://65.2.181.144:4000/api/configuration/getAllConfig`, {
+                const response = await fetch(`https://petalpink.lk/api/configuration/getAllConfig`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -157,7 +156,7 @@ const CheckoutPage = () => {
         };
 
         try {
-            const response = await fetch('http://65.2.181.144:4000/api/customerOrderSave/saveOrder', {
+            const response = await fetch('https://petalpink.lk/api/customerOrderSave/saveOrder', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

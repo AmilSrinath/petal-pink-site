@@ -3,7 +3,6 @@ import React, { FC } from "react";
 import facebook from "images/socials/facebook.svg";
 import tiktok from "images/socials/tiktok.svg";
 import instagram from "images/socials/instagram.svg";
-import youtube from "images/socials/youtube.svg";
 
 export interface SocialsListProps {
   className?: string;

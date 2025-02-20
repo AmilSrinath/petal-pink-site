@@ -4,9 +4,7 @@ import Pagination from "shared/Pagination/Pagination";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import SectionSliderCollections from "components/SectionSliderLargeProduct";
 import SectionPromo1 from "components/SectionPromo1";
-import ProductCard from "components/ProductCard";
 import TabFilters from "./TabFilters";
-import { PRODUCTS } from "data/data";
 
 export interface PageCollectionProps {
   className?: string;

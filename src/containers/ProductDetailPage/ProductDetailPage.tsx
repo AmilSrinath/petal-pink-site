@@ -60,7 +60,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
         const fetchProductById = async () => {
             try {
                 const response = await axios.get(
-                    `http://65.2.181.144:4000/api/customerOrderSave/getProductById/${product_id}`
+                    `https://petalpink.lk/api/customerOrderSave/getProductById/${product_id}`
                 );
                 setProduct(response.data); // Set the product data
             } catch (error) {

@@ -1,6 +1,5 @@
 import React from "react";
 import { FC } from "react";
-import { NavLink } from "react-router-dom";
 
 export interface CommonLayoutProps {
   children?: React.ReactNode;

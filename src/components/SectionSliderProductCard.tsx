@@ -52,7 +52,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://65.2.181.144:4000/api/customerOrderSave/getAllData");
+        const response = await axios.get("https://petalpink.lk/api/customerOrderSave/getAllData");
         const productData = response.data.map((item: any) => ({
           product_id: Number(item.product_id), // Ensure ID is a number
           product_name: item.product_name,

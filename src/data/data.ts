@@ -1,24 +1,7 @@
 import { productImgs } from "contains/fakeData";
-import productVariantImg2 from "images/products/v2.jpg";
-import productVariantImg3 from "images/products/v3.jpg";
-import productVariantImg4 from "images/products/v4.jpg";
-import productVariantImg5 from "images/products/v5.jpg";
-import productVariantImg6 from "images/products/v6.jpg";
-import productSport1 from "images/products/sport-1.png";
-import productSport2 from "images/products/sport-2.png";
-import productSport3 from "images/products/sport-3.png";
-import productSport4 from "images/products/sport-4.png";
-import productSport5 from "images/products/sport-5.png";
-import productSport6 from "images/products/sport-6.png";
-import productSport7 from "images/products/sport-7.png";
-import productSport8 from "images/products/sport-8.png";
 
 import hairOil from "img/Hair Oil.png";
-import serum from "img/Serum.png";
 import keratin from "img/Keratin pack.png";
-import shampoo from "img/Shampoo.png";
-import growth_mask from "img/indian growth mask.png";
-
 
 export interface ProductVariant {
   id: number;
@@ -52,38 +35,6 @@ export interface Product {
   status?: "New in" | "limited edition" | "Sold Out" | "50% Discount";
 }
 
-const DEMO_VARIANTS: ProductVariant[] = [
-  {
-    id: 1,
-    name: "Black",
-    thumbnail: productVariantImg6,
-    featuredImage: productImgs[0],
-  },
-  {
-    id: 2,
-    name: "White",
-    thumbnail: productVariantImg2,
-    featuredImage: productImgs[1],
-  },
-  {
-    id: 3,
-    name: "Orange",
-    thumbnail: productVariantImg3,
-    featuredImage: productImgs[2],
-  },
-  {
-    id: 4,
-    name: "Sky Blue",
-    thumbnail: productVariantImg4,
-    featuredImage: productImgs[3],
-  },
-  {
-    id: 5,
-    name: "Natural",
-    thumbnail: productVariantImg5,
-    featuredImage: productImgs[4],
-  },
-];
 const DEMO_VARIANT_COLORS: ProductVariant[] = [
   {
     id: 1,

@@ -1,10 +1,9 @@
 import React, { FC } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
-import LikeButton from "components/LikeButton";
 import { StarIcon } from "@heroicons/react/24/solid";
 import BagIcon from "components/BagIcon";
 import NcInputNumber from "components/NcInputNumber";
-import {Product, PRODUCTS} from "data/data";
+import {Product} from "data/data";
 import { useCart } from "../containers/ProductDetailPage/CartContext"; // Import useCart to access cart context
 import {
     NoSymbolIcon,
@@ -17,7 +16,6 @@ import toast from "react-hot-toast";
 import detail1JPG from "images/products/detail1.jpg";
 import detail2JPG from "images/products/detail2.jpg";
 import detail3JPG from "images/products/detail3.jpg";
-import NotifyAddTocart from "./NotifyAddTocart";
 import AccordionInfo from "containers/ProductDetailPage/AccordionInfo";
 import { Link } from "react-router-dom";
 import {Transition} from "@headlessui/react";
@@ -30,9 +28,7 @@ export interface ProductQuickViewProps {
 const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", productData }) => {
     const { product_name, product_price, sizes, variants, status, description, image_url, image_url_2, image_url_3, keyPoints } = productData;
     const keyPointsArray = keyPoints.split('#').filter((point: string) => point.trim().length > 0);
-    const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
     const { addToCart } = useCart(); // Get addToCart from cart context
-    const [variantActive, setVariantActive] = React.useState(0);
     const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
     const [qualitySelected, setQualitySelected] = React.useState(1);
 

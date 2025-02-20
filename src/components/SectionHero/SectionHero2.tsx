@@ -1,8 +1,4 @@
 import React, {FC, useEffect, useState} from "react";
-
-import img1 from "../../img/homeScreenImg/01.15.01.png";
-import img2 from "../../img/homeScreenImg/01.15.02.png";
-import img3 from "../../img/homeScreenImg/01.15.03.png";
 import bg from "../../img/homeScreenImg/SVG file 01.15.02.svg";
 
 import ButtonPrimary from "shared/Button/ButtonPrimary";
@@ -37,7 +33,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await axios.get(`http://65.2.181.144:4000/api/configuration/getAllBanners`);
+        const response = await axios.get(`https://petalpink.lk/api/configuration/getAllBanners`);
         setBanners(response.data.banners);
       } catch (error) {
         console.error("Error fetching banners:", error);

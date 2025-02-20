@@ -22,7 +22,7 @@ export const fetchProducts = async (): Promise<Product[]> => {
     }
     
     try {
-        const response = await fetch(`http://65.2.181.144:4000/api/customerOrderSave/getAllData`);
+        const response = await fetch(`https://petalpink.lk/api/customerOrderSave/getAllData`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

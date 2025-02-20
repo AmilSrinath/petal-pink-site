@@ -30,7 +30,6 @@ const ProductCard: FC<ProductCardProps> = ({
 				product_name,
 				product_price,
 				discount,
-				description,
 				sizes,
 				variants,
 				variantType,
