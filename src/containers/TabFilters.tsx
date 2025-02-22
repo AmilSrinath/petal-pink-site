@@ -11,9 +11,9 @@ import MySwitch from "components/MySwitch";
 
 // DEMO DATA
 const DATA_categories = [
-  {
-    name: "New Arrivals",
-  },
+  // {
+  //   name: "New Arrivals",
+  // },
   {
     name: "Sale",
   },

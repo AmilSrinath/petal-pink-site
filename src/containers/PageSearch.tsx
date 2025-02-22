@@ -131,7 +131,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
         <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">
           <main>
             {/* FILTER */}
-            <HeaderFilterSearchPage />
+            {/*<HeaderFilterSearchPage />*/}
 
             {/* Grid Layout Toggle Buttons - hidden on mobile */}
             <div className="flex justify-center mb-8 space-x-4 hidden sm:block">

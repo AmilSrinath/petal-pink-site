@@ -142,7 +142,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
         />
 
         {/* BG */}
-        <div className="absolute inset-0 bg-[#E3FFE6]">
+        <div className="absolute inset-0 bg-[#E3FFE6] dark:bg-gray-400">
           {/* <div className="absolute inset-0 bg-[#F7F0EA]"> */}
           <img
             className="absolute w-full h-full object-contain"
@@ -165,7 +165,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
             </div>
 
             <ButtonPrimary
-                className="nc-SectionHero2Item__button dark:bg-slate-900"
+                className="nc-SectionHero2Item__button"
                 sizeClass="py-3 px-6 sm:py-5 sm:px-9"
                 href={item.btn_link as any}
             >
