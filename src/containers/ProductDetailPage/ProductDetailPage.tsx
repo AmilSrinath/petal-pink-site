@@ -574,7 +574,6 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
                                 <img
                                     src={product.image_url}
                                     className="w-full rounded-2xl object-cover"
-                                    alt="product detail 1"
                                 />
                             </div>
                             {renderStatus()}
@@ -582,20 +581,21 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
                             {/*<LikeButton className="absolute right-3 top-3 " />*/}
                         </div>
                         <div className="grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-8 xl:mt-8">
-                            {[product.image_url_2, product.image_url_3].map((item, index) => {
-                                return (
-                                    <div
-                                        key={index}
-                                        className="aspect-w-11 xl:aspect-w-10 2xl:aspect-w-11 aspect-h-16"
-                                    >
-                                        <img
-                                            src={item}
-                                            className="w-full rounded-2xl object-cover"
-                                            alt="product detail 1"
-                                        />
-                                    </div>
-                                );
-                            })}
+                            {[product.image_url_2, product.image_url_3]
+                                .filter((item) => item) // Filter out falsy values
+                                .map((item, index) => {
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="aspect-w-11 xl:aspect-w-10 2xl:aspect-w-11 aspect-h-16"
+                                        >
+                                            <img
+                                                src={item}
+                                                className="w-full rounded-2xl object-cover"
+                                            />
+                                        </div>
+                                    );
+                                })}
                         </div>
                     </div>
 

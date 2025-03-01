@@ -272,7 +272,6 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "" }) => {
               <img
                 src={LIST_IMAGES_DEMO[0]}
                 className="w-full rounded-xl object-cover"
-                alt="product detail 1"
               />
             </div>
 

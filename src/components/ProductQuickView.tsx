@@ -317,7 +317,6 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", productDa
                             <img
                                 src={image_url}
                                 className="w-full rounded-xl object-cover"
-                                alt="product detail 1"
                             />
                         </div>
 
@@ -333,7 +332,6 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", productDa
                                     <img
                                         src={item}
                                         className="w-full rounded-xl object-cover"
-                                        alt="product detail 1"
                                     />
                                 </div>
                             );
