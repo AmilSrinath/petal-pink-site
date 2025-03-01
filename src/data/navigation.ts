@@ -80,11 +80,11 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   //   type: "dropdown",
   //   children: OTHER_PAGE_CHILD,
   // },
-  {
-    id: ncNanoId(),
-    href: "/blog",
-    name: "Blog",
-  },
+  // {
+  //   id: ncNanoId(),
+  //   href: "/blog",
+  //   name: "Blog",
+  // },
   {
     id: ncNanoId(),
     href: "/about",
