@@ -5,6 +5,7 @@ import ButtonPrimary from "shared/Button/ButtonPrimary";
 import Label from "../../components/Label/Label";
 import Input from "../../shared/Input/Input";
 import Select from "../../shared/Select/Select";
+import {useNavigate} from "react-router-dom";
 
 // Define the types for the product and cart items
 interface Product {
@@ -21,6 +22,10 @@ interface CartItem {
 
 const CheckoutPage = () => {
     const { cart, updateQuantity, removeFromCart } = useCart();
+    const navigate = useNavigate();
+
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+    const [orderId, setOrderId] = useState(""); // State to store the order ID
 
     const [fistKillo, setFistKillo] = useState(350); // Initial default value
     const [secondKillo, setSecondKillo] = useState(70); // Initial default value
@@ -165,14 +170,80 @@ const CheckoutPage = () => {
             });
 
             if (response.ok) {
-                // Handle successful order submission
-                alert('Order placed successfully!');
+                const data = await response.json(); // Assuming the server returns an order ID
+                const generatedOrderId = data.orderId; // Extract the order ID from the response
+                setOrderId(`#${generatedOrderId}`); // Format the order ID (e.g., #P000001)
+                setIsModalOpen(true); // Open the modal
             } else {
                 throw new Error('Failed to place order');
             }
         } catch (error) {
             console.error('Error placing order:', error);
         }
+    };
+
+    // Modal component
+    const OrderSuccessModal = () => {
+        return (
+            <>
+                {/* Dark overlay */}
+                {isModalOpen && (
+                    <div
+                        style={{
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black
+                            zIndex: 999, // Ensure it's below the modal but above other content
+                        }}
+                    />
+                )}
+
+                {/* Modal */}
+                <div
+                    style={{
+                        display: isModalOpen ? "block" : "none", // Show modal only when isModalOpen is true
+                        position: "fixed",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        backgroundColor: "white",
+                        padding: "20px",
+                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                        zIndex: 1000, // Ensure modal is above the overlay
+                        borderRadius: "8px",
+                        textAlign: "center", // Center align all content inside the modal
+                    }}
+                >
+                    <h2
+                        style={{
+                            color: "#5CB338",
+                            fontSize: "24px",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        Order Successful!
+                    </h2>
+                    <p style={{ margin: "15px" }}>
+                        Your order has been placed successfully.
+                    </p>
+                    <p>
+                        <strong>Your Order ID:</strong> {orderId}
+                    </p>
+                    <ButtonPrimary
+                        className="mt-8 w-full"
+                        onClick={() => {
+                            setIsModalOpen(false); // Close the modal
+                            navigate("/"); // Redirect to the dashboard
+                        }}
+                    >
+                        Close
+                    </ButtonPrimary>
+                </div>
+            </>
+        );
     };
 
     const renderProduct = (item: CartItem, index: number) => {
@@ -182,6 +253,8 @@ const CheckoutPage = () => {
 
         return (
             <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
+                <OrderSuccessModal />
+
                 <div className="relative h-36 w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
                     <img src={image_url} alt={product_name} className="h-full w-full object-contain object-center" />
                 </div>
@@ -391,18 +464,6 @@ const CheckoutPage = () => {
                                     />
                                     {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
                                 </div>
-                                <div>
-                                    <Label className="text-sm">Country</Label>
-                                    <Select
-                                        className="mt-1.5"
-                                        value={country}
-                                        onChange={(e) => setCountry(e.target.value)}
-                                    >
-                                        <option value="Sri Lanka">Sri Lanka</option>
-                                    </Select>
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
                                 <div>
                                     <Label className="text-sm">State/Province</Label>
                                     <Input
