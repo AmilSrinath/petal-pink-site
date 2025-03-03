@@ -33,7 +33,7 @@ const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
           subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
         />
 
-        {/*<SectionFounder />*/}
+        <SectionFounder />
         <div className="relative py-16">
           <BackgroundSection />
           <SectionClientSay />
