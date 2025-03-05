@@ -44,20 +44,33 @@ export default function CartDropdown() {
                   {/*  <span>{"XL"}</span>*/}
                   {/*</p>*/}
                 </div>
-                <Prices price={product_price} className="mt-0.5" />
+                <button
+                    onClick={() => removeFromCart(product.product_id)}
+                    className="font-medium text-primary-6000 dark:text-primary-500"
+                >
+                  {/* Close Icon (SVG Example) */}
+                  <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                  >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
             <div className="flex flex-1 items-end justify-between text-sm">
               <p className="text-gray-500 dark:text-slate-400">{`Qty ${quantity}`}</p>
 
               <div className="flex">
-                <button
-                    type="button"
-                    className="font-medium text-primary-6000 dark:text-primary-500 "
-                    onClick={() => removeFromCart(product.product_id)}
-                >
-                  Remove
-                </button>
+                <Prices price={product_price} className="mt-0.5"/>
               </div>
             </div>
           </div>
@@ -67,14 +80,15 @@ export default function CartDropdown() {
 
   return (
       <Popover className="relative">
-        {({ open, close }) => (
+        {({open, close}) => (
             <>
               <Popover.Button
                   className={`
                 ${open ? "" : "text-opacity-90"}
                  group w-10 h-10 sm:w-12 sm:h-12 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative`}
               >
-                <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-500 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
+                <div
+                    className="w-3.5 h-3.5 flex items-center justify-center bg-primary-500 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
                   <span className="mt-[1px]">{cart.length}</span>
                 </div>
                 <svg

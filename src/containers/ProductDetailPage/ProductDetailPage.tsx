@@ -384,7 +384,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
                 {/* ---------- 5 ----------  */}
                 {/*<AccordionInfo />*/}
 
-                <Disclosure>
+                <Disclosure defaultOpen={true}>
                     {({open}) => (
                         <>
                             <Disclosure.Button
@@ -405,7 +405,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
                     )}
                 </Disclosure>
 
-                <Disclosure>
+                <Disclosure defaultOpen={true}>
                     {({open}) => (
                         <>
                             <Disclosure.Button
@@ -426,7 +426,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
                 </Disclosure>
 
 
-                <Disclosure>
+                <Disclosure defaultOpen={true}>
                     {({open}) => (
                         <>
                             <Disclosure.Button
@@ -448,7 +448,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
                 </Disclosure>
 
 
-                <Disclosure>
+                <Disclosure defaultOpen={true}>
                     {({open}) => (
                         <>
                             <Disclosure.Button
