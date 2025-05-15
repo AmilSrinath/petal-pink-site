@@ -39,7 +39,7 @@ export const pages: Page[] = [
   //
   // { path: "/page-collection-2", component: PageCollection2 },
   { path: "/page-collection", component: PageCollection },
-  { path: "/page-search", component: PageSearch },
+  { path: "/beauty", component: PageSearch },
   //
   { path: "/account", component: AccountPage },
   { path: "/account-savelists", component: AccountSavelists },

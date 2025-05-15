@@ -20,9 +20,11 @@ export const fetchProducts = async (): Promise<Product[]> => {
     if (cachedProducts.length > 0) {
         return cachedProducts;
     }
+
+    const serverUrl = process.env.REACT_APP_API_URL;
     
     try {
-        const response = await fetch(`https://petalpink.lk/api/customerOrderSave/getAllData`);
+        const response = await fetch(`${serverUrl}/api/customerOrderSave/getAllData`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

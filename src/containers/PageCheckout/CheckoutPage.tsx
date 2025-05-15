@@ -44,6 +44,8 @@ const CheckoutPage = () => {
     const [country, setCountry] = useState("Sri Lanka");
     const [paymentMethod, setPaymentMethod] = useState<"CreditCard" | "CashOnDelivery">("CashOnDelivery");
 
+    const serverUrl = process.env.REACT_APP_API_URL;
+
     // Validation state
     const [errors, setErrors] = useState({
         firstName: "",
@@ -59,7 +61,7 @@ const CheckoutPage = () => {
     useEffect(() => {
         const fetchConfig = async () => {
             try {
-                const response = await fetch(`https://petalpink.lk/api/configuration/getAllConfig`, {
+                const response = await fetch(`${serverUrl}/api/configuration/getAllConfig`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -161,7 +163,7 @@ const CheckoutPage = () => {
         };
 
         try {
-            const response = await fetch('https://petalpink.lk/api/customerOrderSave/saveOrder', {
+            const response = await fetch(`${serverUrl}/api/customerOrderSave/saveOrder`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

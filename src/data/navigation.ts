@@ -33,7 +33,7 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     name: "Other Pages",
     children: [
       { id: ncNanoId(), href: "/checkout", name: "Checkout Page" },
-      { id: ncNanoId(), href: "/page-search", name: "Search Page" },
+      { id: ncNanoId(), href: "/beauty", name: "Search Page" },
       { id: ncNanoId(), href: "/cart", name: "Cart Page" },
       { id: ncNanoId(), href: "/account", name: "Accout Page" },
       { id: ncNanoId(), href: "/account-my-order", name: "Order Page" },
@@ -63,19 +63,19 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/page-search",
+    href: "/beauty",
     name: "Beauty",
   },
   // {
   //   id: ncNanoId(),
-  //   href: "/page-search",
+  //   href: "/beauty",
   //   name: "Templates",
   //   type: "megaMenu",
   //   children: MEGAMENU_TEMPLATES,
   // },
   // {
   //   id: ncNanoId(),
-  //   href: "/page-search",
+  //   href: "/beauty",
   //   name: "Explore",
   //   type: "dropdown",
   //   children: OTHER_PAGE_CHILD,

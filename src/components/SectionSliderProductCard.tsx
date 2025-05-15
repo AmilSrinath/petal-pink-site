@@ -49,10 +49,12 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
   const [products, setProducts] = useState<Product[]>([]); // Updated state type
 
+  const serverUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("https://petalpink.lk/api/customerOrderSave/getAllData");
+        const response = await axios.get(`${serverUrl}/api/customerOrderSave/getAllData`);
         const productData = response.data.map((item: any) => ({
           product_id: Number(item.product_id), // Ensure ID is a number
           product_name: item.product_name,

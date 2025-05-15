@@ -46,7 +46,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          navigate("/page-search");
+          navigate("/beauty");
         }}
         className="flex-1 py-2 text-slate-900 dark:text-slate-100"
       >

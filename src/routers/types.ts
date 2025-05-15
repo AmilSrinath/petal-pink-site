@@ -8,7 +8,7 @@ export interface LocationStates {
   "/product-detail-2"?: {};
   "/page-collection"?: {};
   "/page-collection-2"?: {};
-  "/page-search"?: {};
+  "/beauty"?: {};
   "/home-header-2"?: {};
   "/account"?: {};
   "/account-savelists"?: {};

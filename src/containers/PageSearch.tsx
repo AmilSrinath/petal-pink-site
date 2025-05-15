@@ -37,11 +37,13 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
   const [searchTerm, setSearchTerm] = useState(""); // State to store the search term
   const [columns, setColumns] = useState(4); // State to control number of columns
 
+  const serverUrl = process.env.REACT_APP_API_URL;
+
   // Fetch data from API when the component mounts
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("https://petalpink.lk/api/customerOrderSave/getAllData");
+        const response = await axios.get(`${serverUrl}/api/customerOrderSave/getAllData`);
         const productData = response.data.map((item: any) => ({
           product_id: Number(item.product_id), // Convert id to number
           product_name: item.product_name,

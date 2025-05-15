@@ -1,7 +1,6 @@
 import Glide from "@glidejs/glide";
 import Heading from "components/Heading/Heading";
-import React, { FC, useId } from "react";
-import { useEffect } from "react";
+import React, { FC, useId, useState, useEffect } from "react";
 import clientSayMain from "images/clientSayMain.png";
 import clientSay1 from "images/clientSay1.png";
 import clientSay2 from "images/clientSay2.png";
@@ -17,30 +16,14 @@ export interface SectionClientSayProps {
   className?: string;
 }
 
-const DEMO_DATA = [
-  {
-    id: 1,
-    clientName: "Tiana Abie",
-    content:
-        "Great quality products, affordable prices, fast and friendly delivery. I very recommend.",
-  },
-  {
-    id: 2,
-    clientName: "Lennie Swiffan",
-    content:
-        "Great quality products, affordable prices, fast and friendly delivery. I very recommend.",
-  },
-  {
-    id: 3,
-    clientName: "Berta Emili",
-    content:
-        "Great quality products, affordable prices, fast and friendly delivery. I very recommend.",
-  },
-];
-
 const SectionClientSay: FC<SectionClientSayProps> = ({ className = "" }) => {
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
+
+  // State for managing comments and loading/error states
+  const [comments, setComments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let slider: Glide;
@@ -70,6 +53,34 @@ const SectionClientSay: FC<SectionClientSayProps> = ({ className = "" }) => {
       }
     };
   }, [UNIQUE_CLASS]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/api/configuration/getAllComments");
+        if (!response.ok) {
+          throw new Error("Failed to fetch comments");
+        }
+        const data = await response.json();
+
+        // Extract comments from the API response
+        const formattedComments = data.comments.map((comment: any) => ({
+          id: comment.comment_id,
+          clientName: comment.clientName || "Anonymous",
+          content: comment.content,
+          clientImg: comment.clientImg || clientSayMain, // Default image if none provided
+        }));
+
+        setComments(formattedComments);
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, []);
 
   const renderBg = () => {
     return (
@@ -109,9 +120,6 @@ const SectionClientSay: FC<SectionClientSayProps> = ({ className = "" }) => {
           Good news from far away 🥇
         </Heading>
         <div className="relative md:mb-16 max-w-2xl mx-auto">
-          {renderBg()}
-
-          <img className="mx-auto" src={clientSayMain} alt="" />
           <div className={`mt-12 lg:mt-16 relative ${UNIQUE_CLASS}`}>
             <img
                 className="opacity-50 md:opacity-100 absolute -mr-16 lg:mr-3 right-full top-1"
@@ -125,30 +133,39 @@ const SectionClientSay: FC<SectionClientSayProps> = ({ className = "" }) => {
             />
             <div className="glide__track" data-glide-el="track">
               <ul className="glide__slides">
-                {DEMO_DATA.map((item) => (
-                    <li
-                        key={item.id}
-                        className="glide__slide flex flex-col items-center text-center"
-                    >
-                      <span className="block text-2xl">{item.content}</span>
-                      <span className="block mt-8 text-2xl font-semibold">
-                    {item.clientName}
-                  </span>
-                      <div className="flex items-center space-x-0.5 mt-3.5 text-yellow-500">
-                        <StarIcon className="w-6 h-6" />
-                        <StarIcon className="w-6 h-6" />
-                        <StarIcon className="w-6 h-6" />
-                        <StarIcon className="w-6 h-6" />
-                        <StarIcon className="w-6 h-6" />
-                      </div>
-                    </li>
-                ))}
+                {loading && (
+                    <li className="glide__slide text-center">Loading...</li>
+                )}
+                {error && (
+                    <li className="glide__slide text-center">{error}</li>
+                )}
+                {comments.length > 0 &&
+                    comments.map((item) => (
+                        <li key={item.id} className="glide__slide text-center">
+                          <img
+                              src={item.clientImg}
+                              alt={item.clientName}
+                              className="w-24 h-24 rounded-full mx-auto mb-4"
+                          />
+                          <span className="block text-2xl">{item.content}</span>
+                          <span className="block mt-4 text-2xl font-semibold">
+                      {item.clientName}
+                    </span>
+                          <div className="flex justify-center space-x-1 mt-3 text-yellow-500">
+                            {Array(5)
+                                .fill(0)
+                                .map((_, i) => (
+                                    <StarIcon key={i} className="w-6 h-6" />
+                                ))}
+                          </div>
+                        </li>
+                    ))}
               </ul>
             </div>
 
             {/* Navigation Arrows */}
             <div
-                className="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between px-4"
+                className="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between"
                 data-glide-el="controls"
             >
               <button
@@ -196,7 +213,7 @@ const SectionClientSay: FC<SectionClientSayProps> = ({ className = "" }) => {
                 className="mt-10 glide__bullets flex items-center justify-center"
                 data-glide-el="controls[nav]"
             >
-              {DEMO_DATA.map((item, index) => (
+              {comments.map((item, index) => (
                   <button
                       key={item.id}
                       className="glide__bullet w-2 h-2 rounded-full bg-neutral-300 mx-1 focus:outline-none"

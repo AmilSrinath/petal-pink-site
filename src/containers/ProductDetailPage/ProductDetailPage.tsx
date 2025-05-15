@@ -55,12 +55,14 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({className = ""}) => {
     const {product_id} = useParams<{ product_id: string }>(); // Get the product id from URL params
     const [product, setProduct] = useState<Product | null>(null); // State to store the fetched product
 
+    const serverUrl = process.env.REACT_APP_API_URL;
+
     useEffect(() => {
         // Fetch product details by ID from the API
         const fetchProductById = async () => {
             try {
                 const response = await axios.get(
-                    `https://petalpink.lk/api/customerOrderSave/getProductById/${product_id}`
+                    `${serverUrl}/api/customerOrderSave/getProductById/${product_id}`
                 );
                 setProduct(response.data); // Set the product data
             } catch (error) {

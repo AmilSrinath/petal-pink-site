@@ -27,13 +27,12 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "" }) => {
   const [indexActive, setIndexActive] = useState(0);
   const [isRunning, toggleIsRunning] = useBoolean(true);
 
-  const serverUrl = process.env.NEXT_PUBLIC_REACT_APP_API_SERVER_URL;
-  console.log(">>>>>>>>>> : ",serverUrl)
+  const serverUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await axios.get(`https://petalpink.lk/api/configuration/getAllBanners`);
+        const response = await axios.get(`${serverUrl}/api/configuration/getAllBanners`);
         setBanners(response.data.banners);
       } catch (error) {
         console.error("Error fetching banners:", error);

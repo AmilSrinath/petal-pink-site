@@ -1,4 +1,4 @@
-import rightImg from "images/hero-right1.png";
+import rightImg from "images/05.png";
 import React, { FC } from "react";
 import SectionFounder from "./SectionFounder";
 import { Helmet } from "react-helmet-async";
