@@ -92,6 +92,35 @@
   will-change: transform;
 }
 
+// Mobile-specific optimizations
+@media (max-width: 640px) {
+  .animate-float {
+    animation-duration: 8s; // Slower animations on mobile
+  }
+  
+  .backdrop-blur-md {
+    backdrop-filter: blur(4px); // Reduced blur on mobile
+    -webkit-backdrop-filter: blur(4px);
+  }
+  
+  .shadow-2xl {
+    box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.1); // Lighter shadows on mobile
+  }
+}
+
+// Touch-friendly interactions
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+// Mobile-first responsive utilities
+@media (min-width: 475px) {
+  .xs\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 // Reduce motion for users who prefer it
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
@@ -102,5 +131,20 @@
   
   .transition-all {
     transition: none;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .bg-gradient-to-r {
+    background: solid;
+  }
+}
+
+// Dark mode optimizations for mobile
+@media (max-width: 640px) and (prefers-color-scheme: dark) {
+  .backdrop-blur-sm {
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
 }
