@@ -1,12 +1,12 @@
-import Logo from "shared/Logo/Logo";
-import SocialsList1 from "shared/SocialsList1/SocialsList1";
-import { CustomLink } from "data/types";
-import React from "react";
+import Logo from "shared/Logo/Logo"
+import SocialsList1 from "shared/SocialsList1/SocialsList1"
+import type { CustomLink } from "data/types"
+import type React from "react"
 
 export interface WidgetFooterMenu {
-  id: string;
-  title: string;
-  menus: CustomLink[];
+  id: string
+  title: string
+  menus: CustomLink[]
 }
 
 const widgetMenus: WidgetFooterMenu[] = [
@@ -50,13 +50,13 @@ const widgetMenus: WidgetFooterMenu[] = [
       { href: "#", label: "API Reference" },
     ],
   },
-];
+]
 
 const Footer: React.FC = () => {
   const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
     return (
       <div key={index} className="text-sm">
-        <h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
+        <h2 className="font-semibold text-slate-800 dark:text-slate-200 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
           {menu.title}
         </h2>
         <ul className="mt-5 space-y-4">
@@ -64,7 +64,7 @@ const Footer: React.FC = () => {
             <li key={index}>
               <a
                 key={index}
-                className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
+                className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-300"
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -75,12 +75,17 @@ const Footer: React.FC = () => {
           ))}
         </ul>
       </div>
-    );
-  };
+    )
+  }
 
   return (
-    <div className="nc-Footer relative py-20 lg:pt-28 lg:pb-24 border-t border-neutral-200 dark:border-neutral-700">
-      <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 ">
+    <div className="nc-Footer relative py-20 lg:pt-28 lg:pb-24 bg-gradient-to-br from-slate-50 to-purple-50 dark:from-slate-900 dark:to-purple-900 border-t border-white/20 dark:border-white/10">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-orange-500/5"></div>
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-400/10 rounded-full filter blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-cyan-400/10 rounded-full filter blur-3xl"></div>
+
+      <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 relative z-10">
         <div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
           <div className="col-span-2 md:col-span-1">
             <Logo />
@@ -92,7 +97,7 @@ const Footer: React.FC = () => {
         {widgetMenus.map(renderWidgetMenuItem)}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer
